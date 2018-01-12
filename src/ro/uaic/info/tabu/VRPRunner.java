@@ -60,11 +60,11 @@ public class VRPRunner {
             }
         }
 
-        //Compute the greedy Solution
+        //Compute the greedy TabuSearchSolver
         System.out.println("Attempting to resolve Vehicle Routing Problem (VRP) for "+NoOfCustomers+
                 " Customers and "+NoOfVehicles+" Vehicles"+" with "+VehicleCap + " units of capacity\n");
 
-        Solution s = new Solution(NoOfCustomers, NoOfVehicles, VehicleCap);
+        TabuSearchSolver s = new TabuSearchSolver(NoOfCustomers, NoOfVehicles, VehicleCap);
 
         s.TabuSearch(TABU_Horizon, distanceMatrix);
         s.SolutionPrint("Greedy");

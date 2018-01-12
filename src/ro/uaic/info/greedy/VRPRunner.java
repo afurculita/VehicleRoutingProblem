@@ -2,7 +2,6 @@ package ro.uaic.info.greedy;
 
 import ro.uaic.info.Node;
 import ro.uaic.info.VRPLibReader;
-import ro.uaic.info.tabu.Solution;
 import thiagodnf.jacof.util.io.InstanceReader;
 
 import java.io.File;
@@ -58,11 +57,7 @@ public class VRPRunner {
             }
         }
 
-        //Compute the greedy Solution
-        System.out.println("Attempting to resolve Vehicle Routing Problem (VRP) for " + NoOfCustomers +
-                " Customers and " + NoOfVehicles + " Vehicles" + " with " + VehicleCap + " units of capacity\n");
-
-        ro.uaic.info.tabu.Solution s = new Solution(NoOfCustomers, NoOfVehicles, VehicleCap);
+        GreedySolver s = new GreedySolver(NoOfCustomers, NoOfVehicles, VehicleCap);
 
         s.GreedySolution(Nodes, distanceMatrix);
 
