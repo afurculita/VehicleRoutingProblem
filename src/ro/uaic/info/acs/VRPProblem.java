@@ -11,31 +11,44 @@ import java.util.Arrays;
 import java.util.List;
 
 public class VRPProblem extends Problem {
-    public double Q = 1.0;
+    private double Q = 1.0;
 
-    /** Distance Matrix */
+    /**
+     * Distance Matrix
+     */
     private double[][] distance;
 
-    /** Number of Cities */
-    private int numberOfCities;
+    private int[] demands;
 
-    /** Nearest Neighbour heuristic */
+    private int numberOfClients;
+
+    private int vehicleCapacity;
+
+    private List<Integer> visitedNodes;
+
+    /**
+     * Nearest Neighbour heuristic
+     */
     private double cnn;
 
-    public VRPProblem(String filename) throws IOException {
+    VRPProblem(String filename) throws IOException {
 
         VRPLibReader r = new VRPLibReader(new InstanceReader(new File(filename)));
 
-        numberOfCities = r.getDimension();
-
+        numberOfClients = r.getDimension();
         distance = r.getDistance();
+        demands = r.getDemand();
+        vehicleCapacity = r.getVehicleCapacity();
+
+        visitedNodes = new ArrayList<>();
 
         NearestNeighbour nn = new NearestNeighbour();
 
         this.cnn = evaluate(nn.solve(this));
+    }
 
-        System.out.println("Best Solution: " + Arrays.toString(getTheBestSolution()));
-        System.out.println("Best Value: " + evaluate(getTheBestSolution()));
+    public void reset() {
+        visitedNodes = new ArrayList<>();
     }
 
     @Override
@@ -50,10 +63,6 @@ public class VRPProblem extends Problem {
 
     public double getDistance(int i, int j) {
         return this.distance[i][j];
-    }
-
-    public int[] getTheBestSolution(){
-        return new int[]{0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,24,23,25,26,27,28,29,1, 0};
     }
 
     @Override
@@ -74,7 +83,7 @@ public class VRPProblem extends Problem {
 
     @Override
     public int getNumberOfNodes() {
-        return numberOfCities;
+        return numberOfClients;
     }
 
     @Override
@@ -97,9 +106,8 @@ public class VRPProblem extends Problem {
 
         List<Integer> nodesToVisit = new ArrayList<>();
 
-        // Add all nodes (or cities) less the start node
-        for (int i = 0; i < getNumberOfNodes(); i++) {
-            if (i != startingNode) {
+        for (Integer i = 0; i < getNumberOfNodes(); i++) {
+            if (i != startingNode && demands[i] <= vehicleCapacity && !visitedNodes.contains(i)) {
                 nodesToVisit.add(i);
             }
         }
@@ -109,6 +117,27 @@ public class VRPProblem extends Problem {
 
     @Override
     public List<Integer> updateNodesToVisit(List<Integer> tour, List<Integer> nodesToVisit) {
+        List<Integer> nodesToRemove = new ArrayList<>();
+
+        double totalCost = 0.0;
+
+        for (Integer i : tour) {
+            if (!visitedNodes.contains(i)) {
+                visitedNodes.add(i);
+            }
+
+            totalCost += demands[i];
+        }
+
+        for (Integer i : nodesToVisit) {
+            if (totalCost + demands[i] > vehicleCapacity) {
+                nodesToRemove.add(i);
+            }
+        }
+
+        for (Integer i : nodesToRemove) {
+            nodesToVisit.remove(i);
+        }
 
         if (nodesToVisit.isEmpty()) {
             if (!tour.get(0).equals(tour.get(tour.size() - 1))) {

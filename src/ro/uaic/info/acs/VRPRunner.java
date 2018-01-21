@@ -9,11 +9,11 @@ import java.io.IOException;
 public class VRPRunner {
     public static void main(String[] args) throws IOException {
 
-        Problem problem = new VRPProblem("datasets/1a2b3a4a.vrp");
+        Problem problem = new VRPProblem("datasets/att-n48-k4.vrp");
 
-        AntColonySystem aco = new AntColonySystem(problem);
-        aco.setNumberOfAnts(50);
-        aco.setNumberOfIterations(3);
+        AntColonySystem aco = new VrpAcs(problem);
+        aco.setNumberOfAnts(80);
+        aco.setNumberOfIterations(2);
         aco.setAlpha(1.0D);
         aco.setBeta(2.0D);
         aco.setRho(0.1D);

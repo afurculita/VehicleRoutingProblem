@@ -3,7 +3,6 @@ package ro.uaic.info;
 import thiagodnf.jacof.util.io.InstanceReader;
 
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 
 public class VRPLibReader {
 
@@ -11,11 +10,9 @@ public class VRPLibReader {
 
     private int dimension;
     private int vehicleCapacity;
-    private int totalCapacity;
-
     private double[][] coord;
     private double[][] distance;
-    private double[][] demand;
+    private int[] demand;
     private double[][] pickup;
     private LocalTime[][] timeWindows;
     private int[] standTime;
@@ -27,9 +24,9 @@ public class VRPLibReader {
         readHeader();
         readCoordinates();
         readDemand();
-        readPickup();
-        readTimeWindows();
-        readStandtime();
+        //        readPickup();
+        //        readTimeWindows();
+        //        readStandtime();
         readDepots();
         convertCoordToDistance();
     }
@@ -47,10 +44,6 @@ public class VRPLibReader {
             }
 
             if (key.equalsIgnoreCase("CAPACITY")) {
-                totalCapacity = Integer.valueOf(split[1].trim());
-            }
-
-            if (key.equalsIgnoreCase("CAPACITY_VOL")) {
                 vehicleCapacity = Integer.valueOf(split[1].trim());
             }
 
@@ -67,26 +60,30 @@ public class VRPLibReader {
 
         String line = reader.readLine();
         while (!line.equalsIgnoreCase("DEMAND_SECTION")) {
-            String[] split = line.split(" ");
-
-            int i = Integer.valueOf(split[0].trim()) - 1;
-            coord[i][0] = Double.valueOf(split[1].trim());
-            coord[i][1] = Double.valueOf(split[2].trim());
+            parseRow(line, coord);
 
             line = reader.readLine();
         }
     }
 
+    private void parseRow(String line, double[][] coord) {
+        String[] split = line.split(" ");
+
+        int i = Integer.valueOf(split[0].trim()) - 1;
+        coord[i][0] = Double.valueOf(split[1].trim());
+        coord[i][1] = Double.valueOf(split[2].trim());
+    }
+
     private void readDemand() {
-        demand = new double[dimension][2];
+        demand = new int[dimension];
 
         String line = reader.readLine();
-        while (!line.equalsIgnoreCase("PICKUP_SECTION")) {
+        while (!line.equalsIgnoreCase("DEPOT_SECTION")) {
+
             String[] split = line.split(" ");
 
             int i = Integer.valueOf(split[0].trim()) - 1;
-            demand[i][0] = Double.valueOf(split[1].trim());
-            demand[i][1] = Double.valueOf(split[2].trim());
+            demand[i] = Integer.valueOf(split[1].trim());
 
             line = reader.readLine();
         }
@@ -97,11 +94,7 @@ public class VRPLibReader {
 
         String line = reader.readLine();
         while (!line.equalsIgnoreCase("TIME_WINDOW_SECTION")) {
-            String[] split = line.split(" ");
-
-            int i = Integer.valueOf(split[0].trim()) - 1;
-            pickup[i][0] = Double.valueOf(split[1].trim());
-            pickup[i][1] = Double.valueOf(split[2].trim());
+            parseRow(line, pickup);
 
             line = reader.readLine();
         }
@@ -109,7 +102,6 @@ public class VRPLibReader {
 
     private void readTimeWindows() {
         timeWindows = new LocalTime[dimension][2];
-        DateTimeFormatter f2 = DateTimeFormatter.ofPattern("hh:mm");
 
         String line = reader.readLine();
         while (!line.equalsIgnoreCase("STANDTIME_SECTION")) {
@@ -180,7 +172,7 @@ public class VRPLibReader {
         }
     }
 
-    public static double euclideanDistance(double x1, double y1, double x2, double y2) {
+    private static double euclideanDistance(double x1, double y1, double x2, double y2) {
         double xDistance = Math.abs(x1 - x2);
         double yDistance = Math.abs(y1 - y2);
 
@@ -199,24 +191,8 @@ public class VRPLibReader {
         return vehicleCapacity;
     }
 
-    public int getTotalCapacity() {
-        return totalCapacity;
-    }
-
-    public double[][] getDemand() {
+    public int[] getDemand() {
         return demand;
-    }
-
-    public double[][] getPickup() {
-        return pickup;
-    }
-
-    public LocalTime[][] getTimeWindows() {
-        return timeWindows;
-    }
-
-    public int[] getStandTime() {
-        return standTime;
     }
 
     public int[] getDepots() {

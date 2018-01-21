@@ -11,7 +11,7 @@ import java.util.Random;
 public class VRPRunner {
     public static void main(String[] args) throws IOException {
 
-        VRPLibReader r = new VRPLibReader(new InstanceReader(new File("datasets/1a2b3a4a.vrp")));
+        VRPLibReader r = new VRPLibReader(new InstanceReader(new File("datasets/att-n48-k4.vrp")));
 
         Random ran = new Random(151190);
 
