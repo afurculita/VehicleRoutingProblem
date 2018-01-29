@@ -3,23 +3,23 @@ package ro.uaic.info;
 import java.util.ArrayList;
 
 public class Vehicle {
-    public ArrayList<Node> Route = new ArrayList<>();
+    public ArrayList<Node> routes = new ArrayList<>();
     private int capacity;
     public int load;
-    public int CurLoc;
+    public int currentLocation;
 
     public Vehicle(int cap) {
         this.capacity = cap;
         this.load = 0;
-        this.CurLoc = 0; //In depot Initially
-        this.Route.clear();
+        this.currentLocation = 0; //In depot Initially
+        this.routes.clear();
     }
 
-    public void AddNode(Node Customer)//Add Customer to Vehicle Route
+    public void AddNode(Node Customer)//Add Customer to Vehicle routes
     {
-        Route.add(Customer);
+        routes.add(Customer);
         this.load += Customer.demand;
-        this.CurLoc = Customer.NodeId;
+        this.currentLocation = Customer.NodeId;
     }
 
     public boolean CheckIfFits(int dem) //Check if we have Capacity Violation

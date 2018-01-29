@@ -1,26 +1,37 @@
 package ro.uaic.info.greedy;
 
 import ro.uaic.info.Node;
+import ro.uaic.info.VRPLibReader;
 import ro.uaic.info.Vehicle;
 
 public class GreedySolver {
-    private int NoOfVehicles;
-    private int NoOfCustomers;
-    private Vehicle[] Vehicles;
-    private double Cost;
+    private int noOfVehicles;
+    private Node[] nodes;
+    private double[][] distances;
+    private int noOfCustomers;
+    private Vehicle[] vehicles;
+    private double cost;
 
-    GreedySolver(int CustNum, int VechNum, int VechCap) {
-        this.NoOfVehicles = VechNum;
-        this.NoOfCustomers = CustNum;
-        this.Cost = 0;
-        Vehicles = new Vehicle[NoOfVehicles];
+    public GreedySolver(VRPLibReader reader, int noOfVehicles) {
+        this.noOfCustomers = reader.getDimension();
+        this.noOfVehicles = noOfVehicles;
+        this.distances = reader.getDistance();
+        this.cost = 0;
 
-        for (int i = 0; i < NoOfVehicles; i++) {
-            Vehicles[i] = new Vehicle(VechCap);
+        nodes = new Node[noOfCustomers];
+
+        for (int i = 0; i < noOfCustomers; i++) {
+            nodes[i] = new Node(i, reader.getDemand()[i]);
+        }
+
+        this.vehicles = new Vehicle[this.noOfVehicles];
+
+        for (int i = 0; i < this.noOfVehicles; i++) {
+            vehicles[i] = new Vehicle(reader.getVehicleCapacity());
         }
     }
 
-    private boolean UnassignedCustomerExists(Node[] Nodes) {
+    private boolean unassignedCustomerExists(Node[] Nodes) {
         for (int i = 1; i < Nodes.length; i++) {
             if (!Nodes[i].IsRouted)
                 return true;
@@ -28,29 +39,27 @@ public class GreedySolver {
         return false;
     }
 
-    public void GreedySolution(Node[] Nodes, double[][] CostMatrix) {
-
+    public void solve() {
         double CandCost, EndCost;
         int VehIndex = 0;
 
-        while (UnassignedCustomerExists(Nodes)) {
-
+        while (unassignedCustomerExists(nodes)) {
             int CustIndex = 0;
             Node Candidate = null;
             double minCost = (float) Double.MAX_VALUE;
 
-            if (Vehicles[VehIndex].Route.isEmpty()) {
-                Vehicles[VehIndex].AddNode(Nodes[0]);
+            if (vehicles[VehIndex].routes.isEmpty()) {
+                vehicles[VehIndex].AddNode(nodes[0]);
             }
 
-            for (int i = 1; i <= NoOfCustomers; i++) {
-                if (!Nodes[i].IsRouted) {
-                    if (Vehicles[VehIndex].CheckIfFits(Nodes[i].demand)) {
-                        CandCost = CostMatrix[Vehicles[VehIndex].CurLoc][i];
+            for (int i = 0; i < noOfCustomers; i++) {
+                if (!nodes[i].IsRouted) {
+                    if (vehicles[VehIndex].CheckIfFits(nodes[i].demand)) {
+                        CandCost = distances[vehicles[VehIndex].currentLocation][i];
                         if (minCost > CandCost) {
                             minCost = CandCost;
                             CustIndex = i;
-                            Candidate = Nodes[i];
+                            Candidate = nodes[i];
                         }
                     }
                 }
@@ -58,12 +67,12 @@ public class GreedySolver {
 
             if (Candidate == null) {
                 //Not a single Customer Fits
-                if (VehIndex + 1 < Vehicles.length) //We have more vehicles to assign
+                if (VehIndex + 1 < vehicles.length) //We have more vehicles to assign
                 {
-                    if (Vehicles[VehIndex].CurLoc != 0) {//End this route
-                        EndCost = CostMatrix[Vehicles[VehIndex].CurLoc][0];
-                        Vehicles[VehIndex].AddNode(Nodes[0]);
-                        this.Cost += EndCost;
+                    if (vehicles[VehIndex].currentLocation != 0) {//End this route
+                        EndCost = distances[vehicles[VehIndex].currentLocation][0];
+                        vehicles[VehIndex].AddNode(nodes[0]);
+                        this.cost += EndCost;
                     }
                     VehIndex = VehIndex + 1; //Go to next Vehicle
                 } else //We DO NOT have any more vehicle to assign. The problem is unsolved under these parameters
@@ -73,36 +82,43 @@ public class GreedySolver {
                     System.exit(0);
                 }
             } else {
-                Vehicles[VehIndex].AddNode(Candidate);//If a fitting Customer is Found
-                Nodes[CustIndex].IsRouted = true;
-                this.Cost += minCost;
+                vehicles[VehIndex].AddNode(Candidate);//If a fitting Customer is Found
+                nodes[CustIndex].IsRouted = true;
+                this.cost += minCost;
             }
         }
 
-        EndCost = CostMatrix[Vehicles[VehIndex].CurLoc][0];
-        Vehicles[VehIndex].AddNode(Nodes[0]);
-        this.Cost += EndCost;
+        EndCost = distances[vehicles[VehIndex].currentLocation][0];
+        vehicles[VehIndex].AddNode(nodes[0]);
+        this.cost += EndCost;
     }
 
-    public void SolutionPrint(String Solution_Label) {
+    public void print() {
         System.out.println("=========================================================");
-        System.out.println(Solution_Label + "\n");
 
-        for (int j = 0; j < NoOfVehicles; j++) {
-            if (!Vehicles[j].Route.isEmpty()) {
+        for (int j = 0; j < noOfVehicles; j++) {
+            if (!vehicles[j].routes.isEmpty()) {
                 System.out.print("Vehicle " + j + ":");
-                int RoutSize = Vehicles[j].Route.size();
+                int RoutSize = vehicles[j].routes.size();
                 for (int k = 0; k < RoutSize; k++) {
                     if (k == RoutSize - 1) {
-                        System.out.print(Vehicles[j].Route.get(k).NodeId);
+                        System.out.print(vehicles[j].routes.get(k).NodeId);
                     } else {
-                        System.out.print(Vehicles[j].Route.get(k).NodeId + "->");
+                        System.out.print(vehicles[j].routes.get(k).NodeId + "->");
                     }
                 }
                 System.out.println();
             }
         }
-        System.out.println("\nCost " + this.Cost + "\n");
+        System.out.println("\ncost " + this.cost + "\n");
+    }
+
+    public Vehicle[] getVehicles() {
+        return vehicles;
+    }
+
+    public double getCost() {
+        return cost;
     }
 }
 

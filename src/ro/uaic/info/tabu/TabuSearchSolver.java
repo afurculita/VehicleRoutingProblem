@@ -1,102 +1,103 @@
 package ro.uaic.info.tabu;
 
-
 import ro.uaic.info.Node;
+import ro.uaic.info.VRPLibReader;
 import ro.uaic.info.Vehicle;
+import ro.uaic.info.greedy.GreedySolver;
 
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class TabuSearchSolver {
-    private int NoOfVehicles;
-    private Vehicle[] Vehicles;
-    private double Cost;
+    private final double[][] distances;
+    private final int noOfVehicles;
+    private final int TABU_Horizon;
+    private Vehicle[] vehicles;
+    private double cost;
+    private static final int MAX_ITERATIONS = 10000;
 
-    //Tabu Variables
-    private Vehicle[] VehiclesForBestSolution;
+    private final Vehicle[] BestSolutionVehicles;
     private double BestSolutionCost;
+    private final ArrayList<Double> PastSolutions;
 
-    private ArrayList<Double> PastSolutions;
+    TabuSearchSolver(VRPLibReader reader, int noOfVehicles, int TABU_Horizon) {
+        this.noOfVehicles = noOfVehicles;
+        this.TABU_Horizon = TABU_Horizon;
+        this.distances = reader.getDistance();
 
-    TabuSearchSolver(int CustNum, int VechNum, int VechCap) {
-        this.NoOfVehicles = VechNum;
-        this.Cost = 0;
-        Vehicles = new Vehicle[NoOfVehicles];
-        VehiclesForBestSolution = new Vehicle[NoOfVehicles];
-        PastSolutions = new ArrayList<>();
+        GreedySolver greedySolver = new GreedySolver(reader, noOfVehicles);
+        greedySolver.solve();
+        this.vehicles = greedySolver.getVehicles();
+        this.cost = greedySolver.getCost();
 
-        for (int i = 0; i < NoOfVehicles; i++) {
-            Vehicles[i] = new Vehicle(VechCap);
-            VehiclesForBestSolution[i] = new Vehicle(VechCap);
+        this.BestSolutionVehicles = new Vehicle[noOfVehicles];
+        this.PastSolutions = new ArrayList<>();
+
+        for (int i = 0; i < this.noOfVehicles; i++) {
+            this.BestSolutionVehicles[i] = new Vehicle(reader.getVehicleCapacity());
         }
     }
 
-    public void TabuSearch(int TABU_Horizon, double[][] CostMatrix) {
-
+    public void solve() {
         //We use 1-0 exchange move
-        ArrayList<Node> RouteFrom;
-        ArrayList<Node> RouteTo;
+        ArrayList<Node> routesFrom;
+        ArrayList<Node> routesTo;
 
         int MovingNodeDemand = 0;
 
         int VehIndexFrom, VehIndexTo;
-        double BestNCost, NeigthboorCost;
+        double BestNCost, NeighborCost;
 
         int SwapIndexA = -1, SwapIndexB = -1, SwapRouteFrom = -1, SwapRouteTo = -1;
-
-        int MAX_ITERATIONS = 200;
         int iteration_number = 0;
 
-        int DimensionCustomer = CostMatrix[1].length;
+        int DimensionCustomer = this.distances[1].length;
         int TABU_Matrix[][] = new int[DimensionCustomer + 1][DimensionCustomer + 1];
 
-        BestSolutionCost = this.Cost; //Initial TabuSearchSolver Cost
+        this.BestSolutionCost = this.cost;
 
-        boolean Termination = false;
-
-        while (!Termination) {
-            iteration_number++;
+        while (true) {
             BestNCost = Double.MAX_VALUE;
 
-            for (VehIndexFrom = 0; VehIndexFrom < this.Vehicles.length; VehIndexFrom++) {
-                RouteFrom = this.Vehicles[VehIndexFrom].Route;
-                int RoutFromLength = RouteFrom.size();
-                for (int i = 1; i < RoutFromLength - 1; i++) { //Not possible to move depot!
+            for (VehIndexFrom = 0; VehIndexFrom < this.vehicles.length; VehIndexFrom++) {
+                routesFrom = this.vehicles[VehIndexFrom].routes;
+                int RoutFromLength = routesFrom.size();
 
-                    for (VehIndexTo = 0; VehIndexTo < this.Vehicles.length; VehIndexTo++) {
-                        RouteTo = this.Vehicles[VehIndexTo].Route;
-                        int RouteTolength = RouteTo.size();
-                        for (int j = 0; (j < RouteTolength - 1); j++) {//Not possible to move after last Depot!
+                for (int i = 1; i < (RoutFromLength - 1); i++) { //Not possible to move depot!
+                    for (VehIndexTo = 0; VehIndexTo < this.vehicles.length; VehIndexTo++) {
+                        routesTo = this.vehicles[VehIndexTo].routes;
+                        int RouteToLength = routesTo.size();
+                        for (int j = 0; (j < RouteToLength - 1); j++) {//Not possible to move after last Depot!
 
-                            MovingNodeDemand = RouteFrom.get(i).demand;
+                            MovingNodeDemand = routesFrom.get(i).demand;
 
-                            if ((VehIndexFrom == VehIndexTo) || this.Vehicles[VehIndexTo].CheckIfFits(MovingNodeDemand)) {
+                            if ((VehIndexFrom == VehIndexTo) || this.vehicles[VehIndexTo].CheckIfFits(MovingNodeDemand)) {
                                 //If we assign to a different route check capacity constrains
                                 //if in the new route is the same no need to check for capacity
 
                                 if (!((VehIndexFrom == VehIndexTo) && ((j == i) || (j == i - 1))))  // Not a move that Changes solution cost
                                 {
-                                    double MinusCost1 = CostMatrix[RouteFrom.get(i - 1).NodeId][RouteFrom.get(i).NodeId];
-                                    double MinusCost2 = CostMatrix[RouteFrom.get(i).NodeId][RouteFrom.get(i + 1).NodeId];
-                                    double MinusCost3 = CostMatrix[RouteTo.get(j).NodeId][RouteTo.get(j + 1).NodeId];
+                                    double MinusCost1 = this.distances[routesFrom.get(i - 1).NodeId][routesFrom.get(i).NodeId];
+                                    double MinusCost2 = this.distances[routesFrom.get(i).NodeId][routesFrom.get(i + 1).NodeId];
+                                    double MinusCost3 = this.distances[routesTo.get(j).NodeId][routesTo.get(j + 1).NodeId];
 
-                                    double AddedCost1 = CostMatrix[RouteFrom.get(i - 1).NodeId][RouteFrom.get(i + 1).NodeId];
-                                    double AddedCost2 = CostMatrix[RouteTo.get(j).NodeId][RouteFrom.get(i).NodeId];
-                                    double AddedCost3 = CostMatrix[RouteFrom.get(i).NodeId][RouteTo.get(j + 1).NodeId];
+                                    double AddedCost1 = this.distances[routesFrom.get(i - 1).NodeId][routesFrom.get(i + 1).NodeId];
+                                    double AddedCost2 = this.distances[routesTo.get(j).NodeId][routesFrom.get(i).NodeId];
+                                    double AddedCost3 = this.distances[routesFrom.get(i).NodeId][routesTo.get(j + 1).NodeId];
 
                                     //Check if the move is a Tabu! - If it is Tabu break
-                                    if ((TABU_Matrix[RouteFrom.get(i - 1).NodeId][RouteFrom.get(i + 1).NodeId] != 0)
-                                            || (TABU_Matrix[RouteTo.get(j).NodeId][RouteFrom.get(i).NodeId] != 0)
-                                            || (TABU_Matrix[RouteFrom.get(i).NodeId][RouteTo.get(j + 1).NodeId] != 0)) {
+                                    if ((TABU_Matrix[routesFrom.get(i - 1).NodeId][routesFrom.get(i + 1).NodeId] != 0)
+                                            || (TABU_Matrix[routesTo.get(j).NodeId][routesFrom.get(i).NodeId] != 0)
+                                            || (TABU_Matrix[routesFrom.get(i).NodeId][routesTo.get(j + 1).NodeId] != 0)) {
                                         break;
                                     }
 
-                                    NeigthboorCost = AddedCost1 + AddedCost2 + AddedCost3
+                                    NeighborCost = AddedCost1 + AddedCost2 + AddedCost3
                                             - MinusCost1 - MinusCost2 - MinusCost3;
 
-                                    if (NeigthboorCost < BestNCost) {
-                                        BestNCost = NeigthboorCost;
+                                    if (NeighborCost < BestNCost) {
+                                        BestNCost = NeighborCost;
                                         SwapIndexA = i;
                                         SwapIndexB = j;
                                         SwapRouteFrom = VehIndexFrom;
@@ -117,67 +118,69 @@ public class TabuSearchSolver {
                 }
             }
 
-            RouteFrom = this.Vehicles[SwapRouteFrom].Route;
-            RouteTo = this.Vehicles[SwapRouteTo].Route;
-            this.Vehicles[SwapRouteFrom].Route = null;
-            this.Vehicles[SwapRouteTo].Route = null;
+            routesFrom = this.vehicles[SwapRouteFrom].routes;
+            routesTo = this.vehicles[SwapRouteTo].routes;
+            this.vehicles[SwapRouteFrom].routes = null;
+            this.vehicles[SwapRouteTo].routes = null;
 
-            Node SwapNode = RouteFrom.get(SwapIndexA);
+            Node SwapNode = routesFrom.get(SwapIndexA);
 
-            int NodeIDBefore = RouteFrom.get(SwapIndexA - 1).NodeId;
-            int NodeIDAfter = RouteFrom.get(SwapIndexA + 1).NodeId;
-            int NodeID_F = RouteTo.get(SwapIndexB).NodeId;
-            int NodeID_G = RouteTo.get(SwapIndexB + 1).NodeId;
+            int NodeIDBefore = routesFrom.get(SwapIndexA - 1).NodeId;
+            int NodeIDAfter = routesFrom.get(SwapIndexA + 1).NodeId;
+            int NodeID_F = routesTo.get(SwapIndexB).NodeId;
+            int NodeID_G = routesTo.get(SwapIndexB + 1).NodeId;
 
             Random TabuRan = new Random();
-            int RendomDelay1 = TabuRan.nextInt(5);
-            int RendomDelay2 = TabuRan.nextInt(5);
-            int RendomDelay3 = TabuRan.nextInt(5);
+            int randomDelay1 = TabuRan.nextInt(5);
+            int randomDelay2 = TabuRan.nextInt(5);
+            int randomDelay3 = TabuRan.nextInt(5);
 
-            TABU_Matrix[NodeIDBefore][SwapNode.NodeId] = TABU_Horizon + RendomDelay1;
-            TABU_Matrix[SwapNode.NodeId][NodeIDAfter] = TABU_Horizon + RendomDelay2;
-            TABU_Matrix[NodeID_F][NodeID_G] = TABU_Horizon + RendomDelay3;
+            TABU_Matrix[NodeIDBefore][SwapNode.NodeId] = this.TABU_Horizon + randomDelay1;
+            TABU_Matrix[SwapNode.NodeId][NodeIDAfter] = this.TABU_Horizon + randomDelay2;
+            TABU_Matrix[NodeID_F][NodeID_G] = this.TABU_Horizon + randomDelay3;
 
-            RouteFrom.remove(SwapIndexA);
+            routesFrom.remove(SwapIndexA);
 
             if (SwapRouteFrom == SwapRouteTo) {
                 if (SwapIndexA < SwapIndexB) {
-                    RouteTo.add(SwapIndexB, SwapNode);
+                    routesTo.add(SwapIndexB, SwapNode);
                 } else {
-                    RouteTo.add(SwapIndexB + 1, SwapNode);
+                    routesTo.add(SwapIndexB + 1, SwapNode);
                 }
             } else {
-                RouteTo.add(SwapIndexB + 1, SwapNode);
+                routesTo.add(SwapIndexB + 1, SwapNode);
             }
 
 
-            this.Vehicles[SwapRouteFrom].Route = RouteFrom;
-            this.Vehicles[SwapRouteFrom].load -= MovingNodeDemand;
+            this.vehicles[SwapRouteFrom].routes = routesFrom;
+            this.vehicles[SwapRouteFrom].load -= MovingNodeDemand;
 
-            this.Vehicles[SwapRouteTo].Route = RouteTo;
-            this.Vehicles[SwapRouteTo].load += MovingNodeDemand;
+            this.vehicles[SwapRouteTo].routes = routesTo;
+            this.vehicles[SwapRouteTo].load += MovingNodeDemand;
 
-            PastSolutions.add(this.Cost);
+            this.PastSolutions.add(this.cost);
 
-            this.Cost += BestNCost;
+            this.cost += BestNCost;
 
-            if (this.Cost < BestSolutionCost) {
-                SaveBestSolution();
+            if (this.cost < this.BestSolutionCost) {
+                iteration_number = 0;
+                this.SaveBestSolution();
+            } else {
+                iteration_number++;
             }
 
-            if (iteration_number == MAX_ITERATIONS) {
-                Termination = true;
+            if (MAX_ITERATIONS == iteration_number) {
+                break;
             }
         }
 
-        this.Vehicles = VehiclesForBestSolution;
-        this.Cost = BestSolutionCost;
+        this.vehicles = this.BestSolutionVehicles;
+        this.cost = this.BestSolutionCost;
 
         try {
-            PrintWriter writer = new PrintWriter("PastSolutionsTabu.txt", "UTF-8");
-            writer.println("Solutions" + "\t");
-            for (Double PastSolution : PastSolutions) {
-                writer.println(PastSolution + "\t");
+            PrintWriter writer = new PrintWriter("results/past_solutions.txt", "UTF-8");
+            for (Double pastSolution : this.PastSolutions) {
+                writer.println(pastSolution + "\t");
             }
             writer.close();
         } catch (Exception e) {
@@ -185,39 +188,37 @@ public class TabuSearchSolver {
     }
 
     private void SaveBestSolution() {
-        BestSolutionCost = Cost;
-        for (int j = 0; j < NoOfVehicles; j++) {
-            VehiclesForBestSolution[j].Route.clear();
-            if (!Vehicles[j].Route.isEmpty()) {
-                int RoutSize = Vehicles[j].Route.size();
+        this.BestSolutionCost = this.cost;
+        for (int j = 0; j < this.noOfVehicles; j++) {
+            this.BestSolutionVehicles[j].routes.clear();
+            if (!this.vehicles[j].routes.isEmpty()) {
+                int RoutSize = this.vehicles[j].routes.size();
                 for (int k = 0; k < RoutSize; k++) {
-                    Node n = Vehicles[j].Route.get(k);
-                    VehiclesForBestSolution[j].Route.add(n);
+                    Node n = this.vehicles[j].routes.get(k);
+                    this.BestSolutionVehicles[j].routes.add(n);
                 }
             }
         }
     }
 
-    public void SolutionPrint(String Solution_Label)//Print TabuSearchSolver In console
-    {
+    public void print() {
         System.out.println("=========================================================");
-        System.out.println(Solution_Label + "\n");
 
-        for (int j = 0; j < NoOfVehicles; j++) {
-            if (!Vehicles[j].Route.isEmpty()) {
+        for (int j = 0; j < this.noOfVehicles; j++) {
+            if (!this.vehicles[j].routes.isEmpty()) {
                 System.out.print("Vehicle " + j + ":");
-                int RoutSize = Vehicles[j].Route.size();
+                int RoutSize = this.vehicles[j].routes.size();
                 for (int k = 0; k < RoutSize; k++) {
                     if (k == RoutSize - 1) {
-                        System.out.print(Vehicles[j].Route.get(k).NodeId);
+                        System.out.print(this.vehicles[j].routes.get(k).NodeId);
                     } else {
-                        System.out.print(Vehicles[j].Route.get(k).NodeId + "->");
+                        System.out.print(this.vehicles[j].routes.get(k).NodeId + "->");
                     }
                 }
                 System.out.println();
             }
         }
-        System.out.println("\nTabuSearchSolver Cost " + this.Cost + "\n");
+        System.out.println("\nTabuSearchSolver cost " + this.cost + "\n");
     }
 }
 
