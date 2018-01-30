@@ -9,7 +9,7 @@ import java.io.IOException;
 public class VRPRunner {
     public static void main(String[] args) throws IOException {
 
-        Problem problem = new VRPProblem("datasets/att-n48-k4.vrp");
+        Problem problem = new VRPProblem("datasets/att-n48.vrp");
 
         AntColonySystem aco = new VrpAcs(problem);
         aco.setNumberOfAnts(80);
