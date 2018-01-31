@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3fadbbe1-c3fc-459a-bece-b10b8a9068df" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java" />
-      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcs.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcsSolver.java" />
-      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java" />
-    </list>
+    <list default="true" id="3fadbbe1-c3fc-459a-bece-b10b8a9068df" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -41,8 +35,8 @@
       <file leaf-file-name="TabuSearchSolver.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="152" column="0" lean-forward="true" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+            <state relative-caret-position="69">
+              <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -420,7 +414,7 @@
       <workItem from="1516695549259" duration="108000" />
       <workItem from="1516695682931" duration="149000" />
       <workItem from="1516695905290" duration="2016000" />
-      <workItem from="1517345511795" duration="5295000" />
+      <workItem from="1517345511795" duration="6004000" />
     </task>
     <task id="LOCAL-00001" summary="WIP">
       <created>1515763721776</created>
@@ -440,7 +434,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="57131000" />
+    <option name="totallyTimeSpent" value="57840000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -937,8 +931,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="152" column="0" lean-forward="true" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
+        <state relative-caret-position="69">
+          <caret line="10" column="0" lean-forward="true" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
           <folding />
         </state>
       </provider>
