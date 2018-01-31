@@ -58,7 +58,7 @@ public class VRPProblem extends Problem {
 
     @Override
     public boolean better(double s1, double best) {
-        return s1 < best;
+        return s1 != 0 && best != 0 & s1 < best;
     }
 
     public double getDistance(int i, int j) {

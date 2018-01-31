@@ -1,27 +1,27 @@
 package ro.uaic.info.acs;
 
-import thiagodnf.jacof.aco.AntColonySystem;
+import org.apache.log4j.Logger;
+import ro.uaic.info.VRP;
+import thiagodnf.jacof.aco.ant.Ant;
 import thiagodnf.jacof.problem.Problem;
-import thiagodnf.jacof.util.ExecutionStats;
 
 import java.io.IOException;
 
 public class VRPRunner {
+
     public static void main(String[] args) throws IOException {
+        Problem problem = new VRPProblem("datasets/" + VRP.FILE + ".vrp");
 
-        Problem problem = new VRPProblem("datasets/att-n48.vrp");
-
-        AntColonySystem aco = new VrpAcs(problem);
+        VrpAcsSolver aco = new VrpAcsSolver(problem);
         aco.setNumberOfAnts(80);
-        aco.setNumberOfIterations(2);
+        aco.setNumberOfIterations(100);
         aco.setAlpha(1.0D);
         aco.setBeta(2.0D);
         aco.setRho(0.1D);
         aco.setOmega(0.1D);
         aco.setQ0(0.9D);
 
-        ExecutionStats es = ExecutionStats.execute(aco, problem);
-
-        es.printStats();
+        aco.solve();
+        aco.print();
     }
 }

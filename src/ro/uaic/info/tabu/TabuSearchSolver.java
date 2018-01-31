@@ -151,7 +151,6 @@ public class TabuSearchSolver {
                 routesTo.add(SwapIndexB + 1, SwapNode);
             }
 
-
             this.vehicles[SwapRouteFrom].routes = routesFrom;
             this.vehicles[SwapRouteFrom].load -= MovingNodeDemand;
 

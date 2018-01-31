@@ -2,98 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3fadbbe1-c3fc-459a-bece-b10b8a9068df" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n32-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n33-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n33-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n34-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n36-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n37-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n37-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n38-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n39-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n39-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n44-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n45-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n45-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n46-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n48-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n53-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n54-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n55-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n60-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n61-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n62-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n63-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n63-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n64-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n65-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n69-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/A-n80-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n31-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n34-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n35-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n38-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n39-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n41-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n43-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n44-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n45-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n45-k6.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n50-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n50-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n51-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n52-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n56-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n57-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n57-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n63-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n64-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n66-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n67-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n68-k9.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/B-n78-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n101-k4.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n16-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n19-k2.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n20-k2.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n21-k2.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n22-k2.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n22-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n23-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n40-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n45-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n50-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n50-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n50-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n51-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n55-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n55-k15.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n55-k7.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n55-k8.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n60-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n60-k15.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n65-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n70-k10.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n76-k4.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/P-n76-k5.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/datasets/eil30.vrp" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/ro/uaic/info/VRP.java" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change beforePath="$PROJECT_DIR$/datasets/att-n48-k4.vrp" afterPath="$PROJECT_DIR$/datasets/att-n48.vrp" />
-      <change beforePath="$PROJECT_DIR$/datasets/bayg-n29-k4.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/bays-n29-k5.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/dantzig-n42-k4.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/fri-n26-k3.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/gr-n17-k3.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/gr-n21-k3.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/gr-n24-k4.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/gr-n48-k3.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/hk-n48-k4.vrp" afterPath="" />
-      <change beforePath="$PROJECT_DIR$/datasets/swiss-n42-k5.vrp" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java" />
       <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/greedy/VRPRunner.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/greedy/VRPRunner.java" />
-      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/tabu/VRPRunner.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/tabu/VRPRunner.java" />
-      <change beforePath="$PROJECT_DIR$/vrp.iml" afterPath="$PROJECT_DIR$/vrp.iml" />
+      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcs.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcsSolver.java" />
+      <change beforePath="$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java" afterPath="$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -105,11 +18,31 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="VRP.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/VRP.java">
+      <file leaf-file-name="VRPRunner.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="69">
-              <caret line="3" column="48" lean-forward="false" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
+            <state relative-caret-position="437">
+              <caret line="24" column="20" lean-forward="false" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GreedySolver.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/greedy/GreedySolver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-1219">
+              <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TabuSearchSolver.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="322">
+              <caret line="152" column="0" lean-forward="true" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -131,6 +64,9 @@
       <find>constructAntsSolutions</find>
       <find>Ant_0</find>
       <find>NODE_COORD_SECTION</find>
+      <find>Current best</find>
+      <find>Current-best</find>
+      <find>Best Value</find>
     </findStrings>
     <dirStrings>
       <dir>$PROJECT_DIR$/src</dir>
@@ -161,20 +97,21 @@
         <option value="$PROJECT_DIR$/src/ro/uaic/info/tabu/Solution.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/greedy/Solution.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/greedy/GreedySolver.java" />
-        <option value="$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java" />
         <option value="$PROJECT_DIR$/Java2/src/main/java/pl/edu/agh/bo/cvrp/AntColonyCVRP.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAntColonySystem.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpQSelection.java" />
         <option value="$PROJECT_DIR$/Java2/src/main/java/pl/edu/agh/bo/cvrp/TestCVRP.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/AlwaysFromZeroAntInitialization.java" />
-        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcs.java" />
-        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java" />
-        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java" />
         <option value="$PROJECT_DIR$/C++/src/analisis.r" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/VRPLibReader.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/tabu/VRPRunner.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/greedy/VRPRunner.java" />
         <option value="$PROJECT_DIR$/src/ro/uaic/info/VRP.java" />
+        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java" />
+        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcs.java" />
+        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcsSolver.java" />
+        <option value="$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java" />
+        <option value="$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java" />
       </list>
     </option>
   </component>
@@ -231,11 +168,6 @@
             <path>
               <item name="ACS-VRP" type="b2602c69:ProjectViewProjectNode" />
               <item name="ACS-VRP" type="462c0819:PsiDirectoryNode" />
-              <item name="datasets" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ACS-VRP" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ACS-VRP" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -243,6 +175,27 @@
               <item name="ACS-VRP" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="info" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ACS-VRP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ACS-VRP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="info" type="462c0819:PsiDirectoryNode" />
+              <item name="acs" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ACS-VRP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ACS-VRP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="info" type="462c0819:PsiDirectoryNode" />
+              <item name="greedy" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="ACS-VRP" type="b2602c69:ProjectViewProjectNode" />
+              <item name="ACS-VRP" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="info" type="462c0819:PsiDirectoryNode" />
+              <item name="tabu" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -285,13 +238,32 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Application.Tabu">
+  <component name="RunManager" selected="Application.Greedy">
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
       <option name="WIDTH" value="400" />
       <option name="HEIGHT" value="300" />
       <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
       <module />
+    </configuration>
+    <configuration name="ACS" type="Application" factoryName="Application" temporary="true">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
+        <pattern>
+          <option name="PATTERN" value="ro.uaic.info.acs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="MAIN_CLASS_NAME" value="ro.uaic.info.acs.VRPRunner" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="vrp" />
+      <envs />
     </configuration>
     <configuration name="Greedy" type="Application" factoryName="Application" temporary="true">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
@@ -405,14 +377,16 @@
       <option name="PROGRAM_PARAMETERS" />
       <predefined_log_file id="idea.log" enabled="true" />
     </configuration>
-    <list size="2">
+    <list size="3">
       <item index="0" class="java.lang.String" itemvalue="Application.Tabu" />
       <item index="1" class="java.lang.String" itemvalue="Application.Greedy" />
+      <item index="2" class="java.lang.String" itemvalue="Application.ACS" />
     </list>
     <recent_temporary>
-      <list size="2">
-        <item index="0" class="java.lang.String" itemvalue="Application.Tabu" />
-        <item index="1" class="java.lang.String" itemvalue="Application.Greedy" />
+      <list size="3">
+        <item index="0" class="java.lang.String" itemvalue="Application.Greedy" />
+        <item index="1" class="java.lang.String" itemvalue="Application.Tabu" />
+        <item index="2" class="java.lang.String" itemvalue="Application.ACS" />
       </list>
     </recent_temporary>
   </component>
@@ -446,7 +420,7 @@
       <workItem from="1516695549259" duration="108000" />
       <workItem from="1516695682931" duration="149000" />
       <workItem from="1516695905290" duration="2016000" />
-      <workItem from="1517345511795" duration="1312000" />
+      <workItem from="1517345511795" duration="5295000" />
     </task>
     <task id="LOCAL-00001" summary="WIP">
       <created>1515763721776</created>
@@ -466,7 +440,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53148000" />
+    <option name="totallyTimeSpent" value="57131000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -486,12 +460,12 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.5261194" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32985073" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.329602" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.44900498" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22818312" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3283582" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -528,7 +502,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="31" />
+      <option name="time" value="36" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -552,94 +526,10 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/ant/Ant.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="122" column="17" lean-forward="false" selection-start-line="122" selection-start-column="17" selection-end-line="122" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/rule/globalupdate/evaporation/FullEvaporation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="20" column="0" lean-forward="false" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/rule/globalupdate/evaporation/AbstractEvaporation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="5" column="22" lean-forward="false" selection-start-line="5" selection-start-column="22" selection-end-line="5" selection-end-column="22" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/ACO.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2098">
-          <caret line="248" column="52" lean-forward="false" selection-start-line="248" selection-start-column="52" selection-end-line="248" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/NearestNeighbour.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="7" column="19" lean-forward="false" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcs.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="34" column="41" lean-forward="false" selection-start-line="34" selection-start-column="41" selection-end-line="34" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/Node.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/C++/src/aoc.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="150">
-          <caret line="10" column="0" lean-forward="false" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/C++/src/main.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$USER_HOME$/Library/Caches/IntelliJIdea2017.3/r_skeletons/1842261700/utils.R">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="645">
-          <caret line="43" column="0" lean-forward="false" selection-start-line="43" selection-start-column="0" selection-end-line="43" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/C++/src/analisis.r">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="53" lean-forward="false" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/C++/src/aoc.c">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="240">
           <caret line="16" column="0" lean-forward="true" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="506">
-          <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
         </state>
       </provider>
     </entry>
@@ -655,13 +545,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="230">
           <caret line="11" column="27" lean-forward="false" selection-start-line="11" selection-start-column="27" selection-end-line="11" selection-end-column="27" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="720">
-          <caret line="115" column="5" lean-forward="false" selection-start-line="115" selection-start-column="5" selection-end-line="115" selection-end-column="5" />
         </state>
       </provider>
     </entry>
@@ -690,14 +573,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
           <caret line="51" column="17" lean-forward="false" selection-start-line="51" selection-start-column="17" selection-end-line="51" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/greedy/GreedySolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-166">
-          <caret line="45" column="33" lean-forward="false" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -813,16 +688,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3197">
-          <caret line="139" column="71" lean-forward="false" selection-start-line="139" selection-start-column="71" selection-end-line="139" selection-end-column="71" />
-          <folding>
-            <element signature="imports" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datasets/P-n16-k8.vrp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -895,22 +760,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/VRPRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="184">
-          <caret line="13" column="18" lean-forward="false" selection-start-line="13" selection-start-column="18" selection-end-line="13" selection-end-column="18" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/greedy/VRPRunner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="12" column="47" lean-forward="false" selection-start-line="12" selection-start-column="47" selection-end-line="12" selection-end-column="47" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/datasets/A-n80-k10.vrp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -937,8 +786,159 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/VRP.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="69">
-          <caret line="3" column="48" lean-forward="false" selection-start-line="3" selection-start-column="48" selection-end-line="3" selection-end-column="48" />
+        <state relative-caret-position="115">
+          <caret line="5" column="0" lean-forward="true" selection-start-line="5" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home/src.zip!/java/lang/Object.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="500" column="22" lean-forward="false" selection-start-line="500" selection-start-column="22" selection-end-line="500" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home/src.zip!/java/util/Observer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="414">
+          <caret line="41" column="33" lean-forward="true" selection-start-line="41" selection-start-column="33" selection-end-line="41" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_152.jdk/Contents/Home/src.zip!/java/util/Map.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="402">
+          <caret line="622" column="17" lean-forward="true" selection-start-line="622" selection-start-column="17" selection-end-line="622" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/rule/globalupdate/deposit/PartialDeposit.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="127">
+          <caret line="29" column="0" lean-forward="false" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/subset/single/GlobalOrCurrentBest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="52">
+          <caret line="24" column="50" lean-forward="true" selection-start-line="24" selection-start-column="50" selection-end-line="24" selection-end-column="50" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/problem/Problem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="4" column="22" lean-forward="false" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VRPProblem.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1058">
+          <caret line="68" column="18" lean-forward="false" selection-start-line="68" selection-start-column="18" selection-end-line="68" selection-end-column="18" />
+          <folding>
+            <element signature="e#1322#1323#0" expanded="false" />
+            <element signature="e#1377#1378#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/subset/single/GlobalBest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <folding>
+            <element signature="e#553#554#0" expanded="false" />
+            <element signature="e#570#571#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/ACO.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="414" column="19" lean-forward="false" selection-start-line="414" selection-start-column="19" selection-end-line="414" selection-end-column="19" />
+          <folding>
+            <element signature="e#4220#4221#0" expanded="false" />
+            <element signature="e#4259#4260#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/util/ExecutionStats.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="736">
+          <caret line="41" column="16" lean-forward="false" selection-start-line="41" selection-start-column="16" selection-end-line="41" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/greedy/VRPRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="161">
+          <caret line="12" column="47" lean-forward="false" selection-start-line="12" selection-start-column="47" selection-end-line="12" selection-end-column="47" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/com/github/thiagodnf/jacof/master-67fd6f1125-1/jacof-master-67fd6f1125-1-sources.jar!/thiagodnf/jacof/aco/ant/Ant.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2175">
+          <caret line="40" column="21" lean-forward="false" selection-start-line="40" selection-start-column="21" selection-end-line="40" selection-end-column="21" />
+          <folding>
+            <element signature="e#4262#4263#0" expanded="false" />
+            <element signature="e#4319#4320#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VrpAcsSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="575">
+          <caret line="145" column="16" lean-forward="false" selection-start-line="145" selection-start-column="16" selection-end-line="145" selection-end-column="16" />
+          <folding>
+            <element signature="e#1116#1117#0" expanded="true" />
+            <element signature="e#1146#1147#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/VRPRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="19" column="0" lean-forward="true" selection-start-line="19" selection-start-column="0" selection-end-line="19" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/acs/VRPRunner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="437">
+          <caret line="24" column="20" lean-forward="false" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/greedy/GreedySolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1219">
+          <caret line="40" column="0" lean-forward="true" selection-start-line="40" selection-start-column="0" selection-end-line="40" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/ro/uaic/info/tabu/TabuSearchSolver.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="322">
+          <caret line="152" column="0" lean-forward="true" selection-start-line="152" selection-start-column="0" selection-end-line="152" selection-end-column="0" />
           <folding />
         </state>
       </provider>
