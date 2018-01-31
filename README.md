@@ -1,2 +1,2 @@
-# ACS-VRP
-Vehicle Routing Problem solved using Ant Colony System algorithm
+# Vehicle Routing Problem
+Vehicle Routing Problem solved using Ant Colony System, Greedy and Tabu Search algorithms
