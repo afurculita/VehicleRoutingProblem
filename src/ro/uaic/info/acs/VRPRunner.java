@@ -1,14 +1,11 @@
 package ro.uaic.info.acs;
 
-import org.apache.log4j.Logger;
 import ro.uaic.info.VRP;
-import thiagodnf.jacof.aco.ant.Ant;
 import thiagodnf.jacof.problem.Problem;
 
 import java.io.IOException;
 
 public class VRPRunner {
-
     public static void main(String[] args) throws IOException {
         Problem problem = new VRPProblem("datasets/" + VRP.FILE + ".vrp");
 

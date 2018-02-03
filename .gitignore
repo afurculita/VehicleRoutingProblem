@@ -1,5 +1,7 @@
 # Compiled class file
 *.class
+.idea/*
+.DS_Store
 
 # Log file
 *.log
@@ -22,5 +24,3 @@
 hs_err_pid*
 target/*
 results
-
-C++/
