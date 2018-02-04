@@ -1,0 +1,16 @@
+#!/bin/bash
+ 
+# To use --cluster=[sge|pbs|torque], irace must be invoked in the submission
+# node and target-runner will launch jobs using qsub and return the jobID.
+CLUSTER="sge"
+BINDIR=$1
+EXECDIR=$2
+DESTMAIL=${USER}@localhost
+shift 2
+$BINDIR/irace --exec-dir=$EXECDIR --cluster=$CLUSTER --target-runner=target-runner-${CLUSTER} $* \
+    1> $EXECDIR/irace-$$.stdout \
+    2> $EXECDIR/irace-$$.stderr
+if [ ${DESTMAIL} ]; then
+    cat "$EXECDIR/irace-$$.stderr" \
+        | mail -s "[irace] $EXECDIR/irace-$$ $*" $DESTMAIL
+fi

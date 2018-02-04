@@ -1,0 +1,35 @@
+## Template for parameter description file for Iterated F-Race.
+##
+## The format is one parameter per line. Each line contains:
+##
+## 1: Name of the parameter. An unquoted alphanumeric string,
+##    example: ants
+## 2: Switch to pass the parameter. A quoted (possibly empty) string, 
+##    if the value and the switch must be separated, add a space at
+##    the end of the string. Example : "--version1 --ants "
+## 3: Type. An unquoted single letter, among 
+##     i: Integer, c: component, r: real.
+## 4: For c: All possible values, for i,r: minimum and maximum
+##    values. A variable number of numbers or unquoted strings within
+##    parenthesis separated by commas.
+## 5: Optionally, a character '|' followed by a parameter name
+##    followed by a set of values enclosed in parenthesis.
+##    Example: | mode (acs, ras)
+##
+# 1:            2:                   3: 4:
+colonies         "--colonies "          c (1,2,3,5,10) | selection %in% c("dominance","objective")
+intervals       "--colony-weights "     c (disjoint,overlapping) | colonies %in% c(2, 3, 5, 10)
+cupdate          "--colony-update "     c (origin, region) | colonies %in% c(2, 3, 5, 10)
+nupdate         "--num-update "         c (1, 2, 5, 10)
+selection       "--selection  "         c (dominance,objective,weight)
+weights         "--weights "            c (2, 3, 0.333333, 0.5, -1)
+directions      "--directions "         c (one, all)
+ph              "--ph="                 c (single,multiple)
+heu             "--heu="                c (single,multiple)
+aggreg          "--aggregation "        c (sum, product, random) | ph == "multiple" || heu == "multiple"
+ants             "--Mants "             i (1, 25)
+rho             "--rho "                r (0.01, 0.99)
+onq0            " "                     c (" ", "--q0")
+q0              " "                     r (0.25, 0.99) | onq0 == "--q0"
+beta            "--beta "               r (0, 5)
+alpha           "--alpha "              r (0, 5)

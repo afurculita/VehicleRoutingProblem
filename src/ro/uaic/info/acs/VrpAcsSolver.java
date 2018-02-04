@@ -25,15 +25,23 @@ public class VrpAcsSolver extends AntColonySystem {
     private double bestSolutionOverall = 0.0;
     private List<Ant> bestSolutionAnts = new ArrayList<>();
 
-    VrpAcsSolver(Problem problem) {
+    VrpAcsSolver(Problem problem, VRPRunner jct) {
         super(problem);
+
+        this.setNumberOfAnts(problem.getNumberOfNodes());
+        this.setNumberOfIterations(jct.iterations);
+        this.setAlpha(jct.alpha);
+        this.setBeta(jct.beta);
+        this.setRho(jct.rho);
+        this.setOmega(jct.omega);
+        this.setQ0(jct.q0);
     }
 
     @Override
     public void build() {
         // Initialization
         setGraphInitialization(new ACSInitialization(this));
-        setAntInitialization(new AlwaysFromZeroAntInitialization(this));
+        setAntInitialization(new StartFromDeposit(this));
 
         // Exploration
         setAntExploration(new QSelection(this, new RouletteWheel(), q0));

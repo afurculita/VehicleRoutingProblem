@@ -1,0 +1,14 @@
+These are example hooks to tune a multi-objective algorithm (using the
+hypervolume indicator). You need to set targetRunner and targetEvaluator,
+either in the scenario file of irace (usually scenario.txt), or in
+the command-line (see irace --help), so irace is able to find these
+scripts.
+
+Update target-runner with the path, name and fixed parameters of your
+program.
+
+Update target-evaluator with the path and parameters for computing the
+hypervolume. The example uses the hypervolume code from
+< http://lopez-ibanez.eu/hypervolume >. Additional
+transformations of the input data may be applied before computing the
+hypervolume, such as normalization.

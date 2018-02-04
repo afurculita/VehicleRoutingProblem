@@ -67,7 +67,7 @@ public class VRPLibReader {
     }
 
     private void parseRow(String line, double[][] coord) {
-        String[] split = line.split(" ");
+        String[] split = line.split("\\s+");
 
         int i = Integer.valueOf(split[0].trim()) - 1;
         coord[i][0] = Double.valueOf(split[1].trim());
@@ -80,7 +80,7 @@ public class VRPLibReader {
         String line = reader.readLine();
         while (!line.equalsIgnoreCase("DEPOT_SECTION")) {
 
-            String[] split = line.split(" ");
+            String[] split = line.split("\\s+");
 
             int i = Integer.valueOf(split[0].trim()) - 1;
             demand[i] = Integer.valueOf(split[1].trim());
@@ -105,7 +105,7 @@ public class VRPLibReader {
 
         String line = reader.readLine();
         while (!line.equalsIgnoreCase("STANDTIME_SECTION")) {
-            String[] split = line.split(" ");
+            String[] split = line.split("\\s+");
 
             int i = Integer.valueOf(split[0].trim()) - 1;
 
@@ -132,7 +132,7 @@ public class VRPLibReader {
 
         String line = reader.readLine();
         while (!line.equalsIgnoreCase("DEPOT_SECTION")) {
-            String[] split = line.split(" ");
+            String[] split = line.split("\\s+");
 
             int i = Integer.valueOf(split[0].trim()) - 1;
             standTime[i] = Integer.valueOf(split[1].trim());

@@ -1,0 +1,60 @@
+#!/bin/bash
+###############################################################################
+# This script is the command that is executed every run.
+# Check the examples in examples/
+#
+# This script is run in the execution directory (execDir, --exec-dir),
+# the same directory where target-evaluator is executed. Hence, you may
+# need to copy extra files needed by the executable to this directory.
+#
+#
+# PARAMETERS:
+# $1 is the candidate number
+# $2 is the instance id
+# $3 is the seed
+# $4 is the instance name
+# The rest ($* after `shift 4') are parameters to the run
+#
+# RETURN VALUE:
+# This script should print nothing.
+# Exit with 0 if no error, with 1 in case of error
+###############################################################################
+EXE=~/bin/program
+FIXED_PARAMS=""
+
+CANDIDATE=$1
+INSTANCEID=$2
+SEED=$3
+INSTANCE=$4
+shift 4 || error "Not enough parameters to $0"
+CAND_PARAMS=$*
+
+STDOUT=c${CANDIDATE}-${INSTANCEID}.stdout
+STDERR=c${CANDIDATE}-${INSTANCEID}.stderr
+
+error() {
+    echo "`TZ=UTC date`: error: $@"
+    exit 1
+}
+
+
+# PBS just prints the jobID, so it should be good to go.
+exec qsub <<EOF
+#!/bin/bash
+#$ -N irace-$PPID-$CANDIDATE-${INSTANCEID}
+#$ -l xeon5410
+# -l long
+#$ -m as
+#$ -j yes
+#$ -o /dev/null
+#$ -e /dev/null
+#$ -cwd
+TMP=\$(mktemp -d)
+exec 2> \$TMP/$STDERR
+$EXE ${FIXED_PARAMS} --input $INSTANCE ${CAND_PARAMS} 1> \$TMP/$STDOUT
+RET=\$?
+echo "OK" >& 2
+mv \$TMP/* ./
+rmdir -p \$TMP &> /dev/null
+exit \$RET
+EOF

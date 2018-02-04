@@ -19,20 +19,18 @@ public class TabuSearchSolver {
 
     private final Vehicle[] BestSolutionVehicles;
     private double BestSolutionCost;
-    private final ArrayList<Double> PastSolutions;
 
     TabuSearchSolver(VRPLibReader reader, int noOfVehicles, int TABU_Horizon) {
         this.noOfVehicles = noOfVehicles;
         this.TABU_Horizon = TABU_Horizon;
         this.distances = reader.getDistance();
 
-        GreedySolver greedySolver = new GreedySolver(reader, noOfVehicles);
+        GreedySolver greedySolver = new GreedySolver(reader, this.noOfVehicles);
         greedySolver.solve();
         this.vehicles = greedySolver.getVehicles();
         this.cost = greedySolver.getCost();
 
-        this.BestSolutionVehicles = new Vehicle[noOfVehicles];
-        this.PastSolutions = new ArrayList<>();
+        this.BestSolutionVehicles = new Vehicle[this.noOfVehicles];
 
         for (int i = 0; i < this.noOfVehicles; i++) {
             this.BestSolutionVehicles[i] = new Vehicle(reader.getVehicleCapacity());
@@ -157,8 +155,6 @@ public class TabuSearchSolver {
             this.vehicles[SwapRouteTo].routes = routesTo;
             this.vehicles[SwapRouteTo].load += MovingNodeDemand;
 
-            this.PastSolutions.add(this.cost);
-
             this.cost += BestNCost;
 
             if (this.cost < this.BestSolutionCost) {
@@ -175,15 +171,6 @@ public class TabuSearchSolver {
 
         this.vehicles = this.BestSolutionVehicles;
         this.cost = this.BestSolutionCost;
-
-        try {
-            PrintWriter writer = new PrintWriter("results/past_solutions.txt", "UTF-8");
-            for (Double pastSolution : this.PastSolutions) {
-                writer.println(pastSolution + "\t");
-            }
-            writer.close();
-        } catch (Exception e) {
-        }
     }
 
     private void SaveBestSolution() {

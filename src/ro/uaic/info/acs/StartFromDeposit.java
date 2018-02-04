@@ -3,13 +3,13 @@ package ro.uaic.info.acs;
 import thiagodnf.jacof.aco.ACO;
 import thiagodnf.jacof.aco.ant.initialization.AbstractAntInitialization;
 
-public class AlwaysFromZeroAntInitialization extends AbstractAntInitialization {
+public class StartFromDeposit extends AbstractAntInitialization {
     /**
      * Constructor
      *
      * @param aco The ant colony optimization used
      */
-    public AlwaysFromZeroAntInitialization(ACO aco) {
+    public StartFromDeposit(ACO aco) {
         super(aco);
     }
 
@@ -20,6 +20,6 @@ public class AlwaysFromZeroAntInitialization extends AbstractAntInitialization {
 
     @Override
     public String toString() {
-        return AlwaysFromZeroAntInitialization.class.getSimpleName();
+        return StartFromDeposit.class.getSimpleName();
     }
 }

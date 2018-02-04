@@ -1,0 +1,49 @@
+#!/bin/bash
+###############################################################################
+# This script is the command that is executed every run.
+# Check the examples in examples/
+#
+# PARAMETERS:
+# $1 is the ID of the candidate to be evaluated
+# $2 is the instance ID
+# $3 is the seed
+# $4 is the instance name
+# The rest are parameters for running the program
+#
+# RETURN VALUE:
+# This script should print nothing.
+# Exit with 0 if no error, with 1 in case of error
+###############################################################################
+
+# NOTE: You need to customize EXE and FIXED_PARAMS below.
+# If you change the rest, you need to also update target-evaluator
+
+CANDIDATE="$1"
+INSTANCEID="$2"
+SEED="$3"
+INSTANCE="$4"
+# All other parameters are the candidate parameters to be passed to program
+shift 4 || error "Not enough parameters to $0"
+CAND_PARAMS=$*
+
+STDOUT=c${CANDIDATE}-${INSTANCEID}.stdout
+STDERR=c${CANDIDATE}-${INSTANCEID}.stderr
+
+# If you want to find where targer-runner is.
+#BINDIR=$(dirname "$(readlink -f "$(type -P $0 || echo $0)")")
+EXE=~/bin/program
+FIXED_PARAMS="--trials 1 --input $INSTANCE"
+
+# TODO: Use /tmp for all temporary files, i.e., put target-data under /tmp
+mkdir -p target-data
+cd target-data
+
+$EXE ${FIXED_PARAMS} ${CAND_PARAMS} 1> $STDOUT 2> $STDERR
+# We do this to make sure this target-runner terminated correctly in target-evaluator
+echo "OK" >> $STDERR
+exit 0
+
+error() {
+    echo "`TZ=UTC date`: error: $@"
+    exit 1
+}

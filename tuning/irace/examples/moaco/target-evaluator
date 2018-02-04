@@ -1,0 +1,109 @@
+#!/bin/bash
+###############################################################################
+# This script is run for each configuration to evaluate it after all
+# candidate configurations have been run on a single instance.
+#
+# Check the examples in examples/
+#
+# PARAMETERS:
+# $1 is the configuration number
+# $2 is the instance id
+# $3 is the seed
+# $4 is the instance name
+# $5 is the total number of configurations alive in this iteration
+# The rest are the IDs of all configurations run for this instance
+#
+# ONLY FOR ELITIST RACE: The rest ($* after `shift 5') are the ids of the
+# configurations alive in this iteration. This list can be used to calculate
+# the hypervolume using previous execution results.
+#
+# RETURN VALUE:
+# This script should print a single numerical value
+###############################################################################
+NORMALIZATION_RANGE="'1 2'"
+REFERENCE_POINT="'2.1 2.1'"
+
+# A program that normalizes all _dat files to [0, 1]
+# (optional, not included).
+NORMALIZE="~/bin/nondominated --verbose -n $NORMALIZATION_RANGE -s '_nor'"
+UPDATELIMITS="2>&1 | grep -E '# Total minimum|# Total maximum'  | sed  's/:/:\n/'"
+
+# A program for computing the hypervolume. Download hypervolume
+# code from http://lopez-ibanez.eu/hypervolume
+HV="~/bin/hv --quiet -r $REFERENCE_POINT"
+
+CONFIGURATION="$1"
+INSTANCEID="$2"
+SEED="$3"
+INSTANCE="$4"
+TOTALCONFIGURATIONS="$5"
+shift 5 || error "Not enough parameters to $0"
+ALLIDS=$*
+
+STDOUT=c${CONFIGURATION}-${INSTANCEID}.stdout
+STDERR=c${CONFIGURATION}-${INSTANCEID}.stderr
+
+error() {
+    echo "`TZ=UTC date`: error: $@"
+    if [ -s error.log ]; then
+        cat error.log
+    fi
+    exit 1
+}
+
+error_sleep() {
+    echo "`TZ=UTC date`: error: $@" >> error.log
+    sleep 60
+}
+
+calc_measure() {
+    LIMITSFILE=limits-${INSTANCEID}.txt
+    LIMITSTMP=limits-${INSTANCEID}.tmp
+    if [ -s "$LIMITSFILE" ]; then
+        eval "$NORMALIZE $LIMITSFILE $ALLFILES $UPDATELIMITS" > $LIMITSTMP
+        rm -f ${LIMITSFILE}
+        mv $LIMITSTMP $LIMITSFILE
+    else
+       eval "$NORMALIZE $ALLFILES $UPDATELIMITS" > $LIMITSFILE
+    fi
+
+}
+
+tmp="./target-runner-tmp"
+cd ${tmp} || error "cannot change to directory \'${tmp}\'"
+
+ALLFILES=
+for FILENAME in $ALLIDS; do
+    ALLFILES="$ALLFILES c${FILENAME}-${INSTANCEID}.stdout"
+done
+
+
+# First normalize output files, unless they are ready.
+while ! ls ${ALLFILES}_nor &> /dev/null ; do
+    # Check that all output files are there
+    NUM=$(ls -1 ${ALLFILES} 2> /dev/null | wc --lines)
+    if [ "$NUM" -ne "$TOTALCONFIGURATIONS" ]; then
+        error_sleep "only found $NUM files out of $TOTALCONFIGURATIONS: ${ALLFILES}"
+        continue
+    fi
+    # Check every STDERR
+    for FILENAME in $ALLFILES; do
+        FILESTDERR=${FILENAME/stdout/stderr}
+        [ OK = "$(cat ${FILESTDERR})" ] || (error_sleep "${FILESTDERR} is not OK"; continue)
+        [ -s "$FILENAME" ] || (error_sleep "$FILENAME is empty"; continue)
+    done
+    calc_measure
+    rm -f error.log
+    # Comment out if you wish to keep all output files around
+    comm --output-delimiter=" " -23 <(ls -1 c*-*.* | sort) <(ls -1 ${ALLFILES//-${INSTANCEID}.stdout/-*.*} | sort) | xargs -r rm -f
+    break
+done
+
+if [ ! -s "${STDOUT}_nor" ]; then
+    error "${STDOUT}_nor: No such file or directory"
+fi
+COST=$(eval "$HV ${STDOUT}_nor" || error "calculating hypervolume failed")
+# Negative because hypervolume is maximised but irace minimises.
+echo "-$COST"
+exit 0
+
