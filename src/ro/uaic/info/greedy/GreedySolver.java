@@ -12,9 +12,9 @@ public class GreedySolver {
     private Vehicle[] vehicles;
     private double cost;
 
-    public GreedySolver(VRPLibReader reader, int noOfVehicles) {
+    public GreedySolver(VRPLibReader reader) {
         this.noOfCustomers = reader.getDimension();
-        this.noOfVehicles = noOfVehicles;
+        this.noOfVehicles = reader.getDimension();
         this.distances = reader.getDistance();
         this.cost = 0;
 

@@ -1,6 +1,7 @@
 package ro.uaic.info.acs;
 
 import org.apache.log4j.Logger;
+import ro.uaic.info.VRPRunner;
 import thiagodnf.jacof.aco.ACO;
 import thiagodnf.jacof.aco.AntColonySystem;
 import thiagodnf.jacof.aco.ant.Ant;
@@ -9,7 +10,7 @@ import thiagodnf.jacof.problem.Problem;
 public class VrpAcsSolver extends AntColonySystem {
     private static final Logger LOGGER = Logger.getLogger(ACO.class);
 
-    VrpAcsSolver(Problem problem, VRPRunner jct) {
+    public VrpAcsSolver(Problem problem, VRPRunner jct) {
         super(problem);
 
         this.setNumberOfAnts(problem.getNumberOfNodes());

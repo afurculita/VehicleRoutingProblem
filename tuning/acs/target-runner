@@ -5,7 +5,6 @@
 # $2 is the instance ID
 # $3 is the seed
 # $4 is the instance name
-# The rest ($* after `shift 4') are parameters for running ACOTSP
 #
 # RETURN VALUE:
 # This script should print a single numerical value (the value to be minimized).
@@ -13,7 +12,7 @@
 
 EXE='/usr/bin/java'
 
-FIXED_PARAMS=" -jar ../../target/vrp-1.0.0.jar "
+FIXED_PARAMS=" -jar ../../target/vrp-1.0.0.jar -alg acs "
 
 CONFIG_ID="$1"
 INSTANCE_ID="$2"

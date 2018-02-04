@@ -28,7 +28,7 @@ public class VehicleRoutingProblem extends Problem {
      */
     private double cnn;
 
-    VehicleRoutingProblem(String filename) throws IOException {
+    public VehicleRoutingProblem(String filename) throws IOException {
         VRPLibReader r = new VRPLibReader(new InstanceReader(new File(filename)));
 
         numberOfClients = r.getDimension();

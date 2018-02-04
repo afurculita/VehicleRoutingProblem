@@ -35,7 +35,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>ro.uaic.info.acs.VRPRunner</mainClass>
+                            <mainClass>ro.uaic.info.VRPRunner</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
