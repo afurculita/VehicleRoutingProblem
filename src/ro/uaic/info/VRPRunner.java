@@ -17,7 +17,7 @@ public class VRPRunner {
     @Parameter(names = {"--algorithm", "-alg"}, required = true)
     private String alg;
     @Parameter(names = {"--instance", "-i"})
-    private String instance = "datasets/small/A-n32-k5.vrp";
+    public String instance = "datasets/small/A-n32-k5.vrp";
     @Parameter(names = "--alpha")
     public double alpha = 1.0D;
     @Parameter(names = "--beta")
@@ -31,7 +31,7 @@ public class VRPRunner {
     @Parameter(names = "--iterations")
     public int iterations = 5;
     @Parameter(names = "--tabu")
-    private Integer TabuHorizon = 10;
+    public Integer TabuHorizon = 10;
 
     public static void main(String[] args) throws IOException {
         VRPRunner jct = new VRPRunner();
@@ -40,26 +40,23 @@ public class VRPRunner {
 
         switch (jct.alg) {
             case "acs":
-                Problem problem = new VehicleRoutingProblem(jct.instance);
-                VrpAcsSolver aco = new VrpAcsSolver(problem, jct);
+                VrpAcsSolver aco = new VrpAcsSolver(jct);
 
-                ExecutionStats es = ExecutionStats.execute(aco, problem);
-                es.printStats();
+                ExecutionStats
+                        .execute(aco, aco.getProblem())
+                        .printStats();
                 break;
             case "tabu": {
-                TabuSearchSolver s = new TabuSearchSolver(
-                        new VRPLibReader(new InstanceReader(new File(jct.instance))),
-                        jct.TabuHorizon);
-                s.solve();
-                s.print();
+                new TabuSearchSolver(jct)
+                        .solve()
+                        .print();
                 break;
             }
             default:
             case "greedy": {
-                VRPLibReader r = new VRPLibReader(new InstanceReader(new File(jct.instance)));
-                GreedySolver s = new GreedySolver(r);
-                s.solve();
-                s.print();
+                new GreedySolver(jct)
+                        .solve()
+                        .print();
                 break;
             }
         }

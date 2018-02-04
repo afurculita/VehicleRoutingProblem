@@ -7,11 +7,13 @@ import thiagodnf.jacof.aco.AntColonySystem;
 import thiagodnf.jacof.aco.ant.Ant;
 import thiagodnf.jacof.problem.Problem;
 
+import java.io.IOException;
+
 public class VrpAcsSolver extends AntColonySystem {
     private static final Logger LOGGER = Logger.getLogger(ACO.class);
 
-    public VrpAcsSolver(Problem problem, VRPRunner jct) {
-        super(problem);
+    public VrpAcsSolver(VRPRunner jct) throws IOException {
+        super(new VehicleRoutingProblem(jct.instance));
 
         this.setNumberOfAnts(problem.getNumberOfNodes());
         this.setNumberOfIterations(jct.iterations);

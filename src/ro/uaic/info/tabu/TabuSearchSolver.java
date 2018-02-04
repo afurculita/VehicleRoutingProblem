@@ -2,10 +2,13 @@ package ro.uaic.info.tabu;
 
 import ro.uaic.info.Node;
 import ro.uaic.info.VRPLibReader;
+import ro.uaic.info.VRPRunner;
 import ro.uaic.info.Vehicle;
 import ro.uaic.info.greedy.GreedySolver;
+import thiagodnf.jacof.util.io.InstanceReader;
 
-import java.io.PrintWriter;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,19 +16,22 @@ public class TabuSearchSolver {
     private final double[][] distances;
     private final int noOfVehicles;
     private final int TABU_Horizon;
+    private final int iterations;
+    private final Vehicle[] BestSolutionVehicles;
+
     private Vehicle[] vehicles;
     private double cost;
-    private static final int MAX_ITERATIONS = 10000;
 
-    private final Vehicle[] BestSolutionVehicles;
     private double BestSolutionCost;
 
-    public TabuSearchSolver(VRPLibReader reader, int TABU_Horizon) {
+    public TabuSearchSolver(VRPRunner jct) throws IOException {
+        VRPLibReader reader = new VRPLibReader(new InstanceReader(new File(jct.instance)));
         this.noOfVehicles = reader.getDimension();
-        this.TABU_Horizon = TABU_Horizon;
+        this.TABU_Horizon = jct.TabuHorizon;
         this.distances = reader.getDistance();
+        this.iterations = jct.iterations;
 
-        GreedySolver greedySolver = new GreedySolver(reader);
+        GreedySolver greedySolver = new GreedySolver(jct);
         greedySolver.solve();
         this.vehicles = greedySolver.getVehicles();
         this.cost = greedySolver.getCost();
@@ -37,7 +43,7 @@ public class TabuSearchSolver {
         }
     }
 
-    public void solve() {
+    public TabuSearchSolver solve() {
         //We use 1-0 exchange move
         ArrayList<Node> routesFrom;
         ArrayList<Node> routesTo;
@@ -164,13 +170,15 @@ public class TabuSearchSolver {
                 iteration_number++;
             }
 
-            if (MAX_ITERATIONS == iteration_number) {
+            if (iterations == iteration_number) {
                 break;
             }
         }
 
         this.vehicles = this.BestSolutionVehicles;
         this.cost = this.BestSolutionCost;
+
+        return this;
     }
 
     private void SaveBestSolution() {

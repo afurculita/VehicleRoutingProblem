@@ -2,17 +2,24 @@ package ro.uaic.info.greedy;
 
 import ro.uaic.info.Node;
 import ro.uaic.info.VRPLibReader;
+import ro.uaic.info.VRPRunner;
 import ro.uaic.info.Vehicle;
+import thiagodnf.jacof.util.io.InstanceReader;
+
+import java.io.File;
+import java.io.IOException;
 
 public class GreedySolver {
-    private int noOfVehicles;
-    private Node[] nodes;
-    private double[][] distances;
-    private int noOfCustomers;
-    private Vehicle[] vehicles;
+    private final int noOfVehicles;
+    private final Node[] nodes;
+    private final double[][] distances;
+    private final int noOfCustomers;
+    private final Vehicle[] vehicles;
+
     private double cost;
 
-    public GreedySolver(VRPLibReader reader) {
+    public GreedySolver(VRPRunner jct) throws IOException {
+        VRPLibReader reader = new VRPLibReader(new InstanceReader(new File(jct.instance)));
         this.noOfCustomers = reader.getDimension();
         this.noOfVehicles = reader.getDimension();
         this.distances = reader.getDistance();
@@ -39,7 +46,7 @@ public class GreedySolver {
         return false;
     }
 
-    public void solve() {
+    public GreedySolver solve() {
         double CandCost, EndCost;
         int VehIndex = 0;
 
@@ -91,6 +98,8 @@ public class GreedySolver {
         EndCost = distances[vehicles[VehIndex].currentLocation][0];
         vehicles[VehIndex].AddNode(nodes[0]);
         this.cost += EndCost;
+
+        return this;
     }
 
     public void print() {
