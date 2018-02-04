@@ -20,12 +20,12 @@ public class TabuSearchSolver {
     private final Vehicle[] BestSolutionVehicles;
     private double BestSolutionCost;
 
-    TabuSearchSolver(VRPLibReader reader, int noOfVehicles, int TABU_Horizon) {
-        this.noOfVehicles = noOfVehicles;
+    TabuSearchSolver(VRPLibReader reader, int TABU_Horizon) {
+        this.noOfVehicles = reader.getDimension();
         this.TABU_Horizon = TABU_Horizon;
         this.distances = reader.getDistance();
 
-        GreedySolver greedySolver = new GreedySolver(reader, this.noOfVehicles);
+        GreedySolver greedySolver = new GreedySolver(reader, reader.getDimension());
         greedySolver.solve();
         this.vehicles = greedySolver.getVehicles();
         this.cost = greedySolver.getCost();

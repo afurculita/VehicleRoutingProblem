@@ -104,4 +104,10 @@ is that as many ants are used as there are customers in the VRP (i.e. _m = n_), 
 customer at the beginning of an iteration. After initializing the basic ant system algorithm, the two steps 
 _construction of vehicle routes_ and _trail update_, are repeated for a given number of iterations.
 
-To find the best configuration for the ACS parameters, we are using iRace
+To find the best configuration for the ACS parameters, we've used iRace, a R library described in the following paper:
+https://cran.r-project.org/web/packages/irace/vignettes/irace-package.pdf. The best configuration obtained with iRace
+is:
+
+| alpha | beta |  rho | omega |   q0  |
+| ----- | ---- | ---- | ----- | ----- |
+| 4.1   | 4.33 | 0.45 | 0.08  | 0.67  |
