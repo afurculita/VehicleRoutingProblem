@@ -7,10 +7,9 @@ import thiagodnf.jacof.util.io.InstanceReader;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class VRPProblem extends Problem {
+public class VehicleRoutingProblem extends Problem {
     private double Q = 1.0;
 
     /**
@@ -24,14 +23,12 @@ public class VRPProblem extends Problem {
 
     private int vehicleCapacity;
 
-    private List<Integer> visitedNodes;
-
     /**
      * Nearest Neighbour heuristic
      */
     private double cnn;
 
-    VRPProblem(String filename) throws IOException {
+    VehicleRoutingProblem(String filename) throws IOException {
 
         VRPLibReader r = new VRPLibReader(new InstanceReader(new File(filename)));
 
@@ -40,15 +37,9 @@ public class VRPProblem extends Problem {
         demands = r.getDemand();
         vehicleCapacity = r.getVehicleCapacity();
 
-        visitedNodes = new ArrayList<>();
-
         NearestNeighbour nn = new NearestNeighbour();
 
         this.cnn = evaluate(nn.solve(this));
-    }
-
-    public void reset() {
-        visitedNodes = new ArrayList<>();
     }
 
     @Override
@@ -96,9 +87,13 @@ public class VRPProblem extends Problem {
         return Q / tourLength;
     }
 
+    public int[] getDemands() {
+        return demands;
+    }
+
     @Override
     public String toString() {
-        return VRPProblem.class.getSimpleName();
+        return VehicleRoutingProblem.class.getSimpleName();
     }
 
     @Override
@@ -107,7 +102,7 @@ public class VRPProblem extends Problem {
         List<Integer> nodesToVisit = new ArrayList<>();
 
         for (Integer i = 0; i < getNumberOfNodes(); i++) {
-            if (i != startingNode && demands[i] <= vehicleCapacity && !visitedNodes.contains(i)) {
+            if (i != startingNode) {
                 nodesToVisit.add(i);
             }
         }
@@ -117,26 +112,16 @@ public class VRPProblem extends Problem {
 
     @Override
     public List<Integer> updateNodesToVisit(List<Integer> tour, List<Integer> nodesToVisit) {
-        List<Integer> nodesToRemove = new ArrayList<>();
+        return null;
+    }
 
-        double totalCost = 0.0;
+    public List<Integer> recomputeNodesToVisit(List<Integer> tour, VrpAnt ant) {
+        List<Integer> nodesToVisit = new ArrayList<>();
 
-        for (Integer i : tour) {
-            if (!visitedNodes.contains(i)) {
-                visitedNodes.add(i);
+        for (Integer i = 0; i < getNumberOfNodes(); i++) {
+            if (i != 0 && !tour.contains(i) && (ant.currentCapacity + demands[i]) <= vehicleCapacity) {
+                nodesToVisit.add(i);
             }
-
-            totalCost += demands[i];
-        }
-
-        for (Integer i : nodesToVisit) {
-            if (totalCost + demands[i] > vehicleCapacity) {
-                nodesToRemove.add(i);
-            }
-        }
-
-        for (Integer i : nodesToRemove) {
-            nodesToVisit.remove(i);
         }
 
         if (nodesToVisit.isEmpty()) {

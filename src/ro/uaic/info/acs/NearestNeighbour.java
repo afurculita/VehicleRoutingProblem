@@ -8,7 +8,7 @@ import java.util.List;
 public class NearestNeighbour {
     private JMetalRandom rand = JMetalRandom.getInstance();
 
-    public int[] solve(VRPProblem p) {
+    public int[] solve(VehicleRoutingProblem p) {
 
         List<Integer> citiesToVisit = new ArrayList<>();
         List<Integer> solution = new ArrayList<>();
