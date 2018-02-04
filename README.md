@@ -103,3 +103,5 @@ number of cities in the TSP, and that each ant should start its tour from anothe
 is that as many ants are used as there are customers in the VRP (i.e. _m = n_), and that one ant is placed at each 
 customer at the beginning of an iteration. After initializing the basic ant system algorithm, the two steps 
 _construction of vehicle routes_ and _trail update_, are repeated for a given number of iterations.
+
+To find the best configuration for the ACS parameters, we are using iRace

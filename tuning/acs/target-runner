@@ -1,7 +1,5 @@
 #!/bin/bash
 ###############################################################################
-# This script is to tune the ACOTSP software.
-#
 # PARAMETERS:
 # $1 is the ID of the candidate to be evaluated
 # $2 is the instance ID
@@ -13,10 +11,9 @@
 # This script should print a single numerical value (the value to be minimized).
 ###############################################################################
 
-# Path to the ACOTSP software:
-EXE=java -d64 -Xmx10g -cp "../../target/classes:../../target/lib/*" ro.uaic.info.acs.VRPRunner
+EXE='/usr/bin/java'
 
-FIXED_PARAMS=" "
+FIXED_PARAMS=" -jar ../../target/vrp-1.0.0.jar "
 
 CONFIG_ID="$1"
 INSTANCE_ID="$2"
@@ -39,25 +36,15 @@ if [ ! -x "${EXE}" ]; then
     error "${EXE}: not found or not executable (pwd: $(pwd))"
 fi
 
-# Now we can call ACOTSP by building a command line with all parameters for it
-$EXE ${FIXED_PARAMS} -i $INSTANCE --seed $SEED ${CONFIG_PARAMS} 1> $STDOUT 2> $STDERR
+$EXE $FIXED_PARAMS -i $INSTANCE $CONFIG_PARAMS 1> $STDOUT 2> $STDERR
 
-# The output of the candidate $CONFIG_ID should be written in the file 
-# c${CONFIG_ID}.stdout (see target runner for ACOTSP).
-# Does this file exist?
 if [ ! -s "${STDOUT}" ]; then
-    # In this case, the file does not exist. Let's exit with a value 
-    # different from 0. In this case irace will stop with an error.
     error "${STDOUT}: No such file or directory"
 fi
 
-# Ok, the file exist. It contains the whole output written by ACOTSP.
-# This script should return a single numerical value, the best objective 
-# value found by this run of ACOTSP. The following line is to extract
-# this value from the file containing ACOTSP output.
-COST=$(cat ${STDOUT} | grep -o -E 'Best [-+0-9.e]+' | cut -d ' ' -f2)
+COST=$(cat ${STDOUT} | grep -o -E 'Best Value: [-+0-9.e]+' | cut -d ' ' -f3)
 if ! [[ "$COST" =~ ^[-+0-9.e]+$ ]] ; then
-    error "${STDOUT}: Output is not a number"
+    error "${STDOUT}: Output is not a number: $COST"
 fi
 
 # Print it!
