@@ -17,7 +17,7 @@ public class VRPRunner {
     @Parameter(names = {"--algorithm", "-alg"}, required = true)
     private String alg;
     @Parameter(names = {"--instance", "-i"})
-    private String instance = "datasets/A-n32-k5.vrp";
+    private String instance = "datasets/small/A-n32-k5.vrp";
     @Parameter(names = "--alpha")
     public double alpha = 1.0D;
     @Parameter(names = "--beta")
@@ -54,6 +54,7 @@ public class VRPRunner {
                 s.print();
                 break;
             }
+            default:
             case "greedy": {
                 VRPLibReader r = new VRPLibReader(new InstanceReader(new File(jct.instance)));
                 GreedySolver s = new GreedySolver(r);
