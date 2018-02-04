@@ -17,6 +17,23 @@ public class VrpAnt extends Ant {
     }
 
     /**
+     * Restart all information before starting the search process
+     */
+    public void reset() {
+        VehicleRoutingProblem problem = (VehicleRoutingProblem) aco.getProblem();
+
+        this.currentNode = antInitialization.getPosition(id);
+        this.tourLength = 0.0;
+        this.tour.clear();
+        this.tour.add(new Integer(0));
+        currentCapacity += problem.getDemands()[currentNode];
+
+        this.nodesToVisit = aco.getProblem().initNodesToVisit(this.currentNode);
+        this.tour.add(new Integer(currentNode));
+        this.path = new int[aco.getProblem().getNumberOfNodes()][aco.getProblem().getNumberOfNodes()];
+    }
+
+    /**
      * Construct the ant's solution
      */
     public void explore() {

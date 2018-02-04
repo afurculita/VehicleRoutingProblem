@@ -77,3 +77,29 @@ _Ant Colony System (ACS)_ is an algorithmic approach inspired by the foraging be
  
 <img src="./resources/Flowchart-of-ACS.png" width="400" />
 
+The current implementation of ACS for solving VRP is inspired by the paper "Applying the Ant System to the Vehicle 
+Routing Problem" found at http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.48.7946&rep=rep1&type=pdf.
+
+To solve the VRP, the artificial ants construct vehicle routes by successively choosing cities to visit, until each city 
+has been visited. Whenever the choice of another city would lead to an infeasible solution for reasons of vehicle capacity,
+the depot is chosen and a new tour is started. For the selection of a (not yet visited) city, two aspects are taken into 
+account: how good was the choice of that city, an information that is stored in the pheromone trails _τ(i, j)_ associated 
+with each arc _(vi; vj)_, and how promising is the choice of that city. This latter measure of desirability, called
+visibility and denoted by _η(i, j)_ , is the local heuristic function mentioned above. In the case of the VRP (or the 
+TSP) it is defined as the reciprocal of the distance, i.e. _η(i, j) = 1/d(i, j)_.
+
+The next city to be visited is selected according to a random-proportional rule _p(i, j)_, biased by the parameters 
+_α_ and _β_ that determine the relative influence of the trails and the visibility, respectively.
+
+After an artificial ant _k_ has constructed a feasible solution, the pheromone trails are laid depending on the 
+objective value _L(k)_. For each arc _(vi, vj)_ that was used by ant _k_, the pheromone trail is increased by _1/L(k)_. 
+In addition to that, all arcs belonging to the so far best solution (objective value _M_) are emphasized as if _σ_ ants,
+so-called _elitist ants_ had used them. One elitist ant increases the trail intensity by an amount equal to _1/M_
+if arc _(vi, vj)_ belongs to the so far best solution, and zero otherwise. Furthermore, part of the existing pheromone 
+trails evaporates.
+
+Concerning the initial placement of the artificial ants it was found that the number of ants should be equal to the 
+number of cities in the TSP, and that each ant should start its tour from another city. The implication for the VRP 
+is that as many ants are used as there are customers in the VRP (i.e. _m = n_), and that one ant is placed at each 
+customer at the beginning of an iteration. After initializing the basic ant system algorithm, the two steps 
+_construction of vehicle routes_ and _trail update_, are repeated for a given number of iterations.

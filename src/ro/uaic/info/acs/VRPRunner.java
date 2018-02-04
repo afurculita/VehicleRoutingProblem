@@ -21,7 +21,7 @@ public class VRPRunner {
     @Parameter(names = "--q0")
     public double q0 = 0.9D;
     @Parameter(names = "--iterations")
-    public int iterations = 5;
+    public int iterations = 20;
 
     public static void main(String[] args) throws IOException {
         VRPRunner jct = new VRPRunner();
