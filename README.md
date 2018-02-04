@@ -25,6 +25,9 @@ follows:
 To solve VRP we are using the following metaheuristic algorithms: *Tabu Search* with the initial solution generated 
 with a Greedy Algorithm and *Ant Colony System*.
 
+The instances used are from http://vrp.atd-lab.inf.puc-rio.br/index.php/en/ in the TSPLIB format described here: 
+https://www.iwr.uni-heidelberg.de/groups/comopt/software/TSPLIB95/tsp95.pdf.
+
 ### Tabu Search
 
 Tabu search is a metaheuristic search method employing local search methods. Local (neighborhood) searches take a 
