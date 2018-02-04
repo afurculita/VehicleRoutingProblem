@@ -212,7 +212,7 @@ public class TabuSearchSolver {
                 System.out.println();
             }
         }
-        System.out.println("\nTabuSearchSolver cost " + this.cost + "\n");
+        System.out.println("\nBest Value: " + this.cost + "\n");
     }
 }
 

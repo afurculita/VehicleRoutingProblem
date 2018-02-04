@@ -119,7 +119,7 @@ public class GreedySolver {
                 System.out.println();
             }
         }
-        System.out.println("\ncost " + this.cost + "\n");
+        System.out.println("\nBest Value: " + this.cost + "\n");
     }
 
     public Vehicle[] getVehicles() {
