@@ -68,10 +68,9 @@ The pseudo-code of the Tabu search algorithm:
         20 end
         21 return sBest
 
-To find the best configuration for the ACS parameters, we've used iRace, a R library described in the following paper:
-https://cran.r-project.org/web/packages/irace/vignettes/irace-package.pdf. The scenario used for iRace to find
+To find the best configuration for the Tabu parameters, irace has been used. irace is a R library described in the following paper: https://cran.r-project.org/web/packages/irace/vignettes/irace-package.pdf. The scenario used for irace to find
 the best configuration can be found here: https://github.com/afurculita/VehicleRoutingProblem/tree/master/tuning/tabu. 
-The best configuration obtained with iRace is:
+The best configuration obtained is:
 
 | tabu  | iterations |  
 | ----- | ----  |
@@ -113,9 +112,9 @@ is that as many ants are used as there are customers in the VRP (i.e. _m = n_), 
 customer at the beginning of an iteration. After initializing the basic ant system algorithm, the two steps 
 _construction of vehicle routes_ and _trail update_, are repeated for a given number of iterations.
 
-To find the best configuration for the ACS parameters, we've used iRace. The scenario used for iRace to find
+To find the best configuration for the ACS parameters, irace has been used. The scenario used for irace to find
 the best configuration can be found here: https://github.com/afurculita/VehicleRoutingProblem/tree/master/tuning/acs.
-The best configuration obtained with iRace is:
+The best configuration obtained is:
 
 | alpha | beta |  rho | omega |   q0  | iterations |
 | ----- | ---- | ---- | ----- | ----- | ---------- |
