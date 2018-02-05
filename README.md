@@ -134,6 +134,6 @@ The best configuration obtained is:
 ## Conclusions
 
  1. ACS and Tabu Search are good options for solving VRP
- 2. ACS depends a lot on how are its parameters defined
+ 2. ACS depends on how its parameters are defined
  3. There is no guarantee to obtain optimal solutions; it depends on a probabilistic factor
  4. Tabu Search is much better than ACS for solving VRP
