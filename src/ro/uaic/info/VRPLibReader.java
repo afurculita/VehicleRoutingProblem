@@ -27,7 +27,7 @@ public class VRPLibReader {
         //        readPickup();
         //        readTimeWindows();
         //        readStandtime();
-        readDepots();
+        // readDepots();
         convertCoordToDistance();
     }
 
@@ -147,7 +147,7 @@ public class VRPLibReader {
         String line = reader.readLine();
         int i = 0;
         while (!line.equalsIgnoreCase("EOF")) {
-            depots[i] = Integer.valueOf(line.trim());
+            depots[i] = Double.valueOf(line.trim()).intValue();
             i++;
 
             line = reader.readLine();

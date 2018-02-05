@@ -17,7 +17,7 @@ public class VRPRunner {
     @Parameter(names = {"--algorithm", "-alg"}, required = true)
     private String alg;
     @Parameter(names = {"--instance", "-i"})
-    public String instance = "datasets/small/A-n32-k5.vrp";
+    public String instance = "datasets/big/Golden_20.vrp";
     @Parameter(names = "--alpha")
     public double alpha = 1.0D;
     @Parameter(names = "--beta")

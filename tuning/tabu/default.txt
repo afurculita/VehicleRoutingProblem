@@ -1,2 +1,2 @@
-tabu
-10
+tabu    iterations
+10      5

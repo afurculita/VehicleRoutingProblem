@@ -68,6 +68,15 @@ The pseudo-code of the Tabu search algorithm:
         20 end
         21 return sBest
 
+To find the best configuration for the ACS parameters, we've used iRace, a R library described in the following paper:
+https://cran.r-project.org/web/packages/irace/vignettes/irace-package.pdf. The scenario used for iRace to find
+the best configuration can be found here: https://github.com/afurculita/VehicleRoutingProblem/tree/master/tuning/tabu. 
+The best configuration obtained with iRace is:
+
+| tabu  | iterations |  
+| ----- | ----  |
+| 7     | 19     | 
+
 ### Ant Colony System
 
 _Ant Colony System (ACS)_ is an algorithmic approach inspired by the foraging behavior of real ants. Artificial ants
@@ -104,10 +113,28 @@ is that as many ants are used as there are customers in the VRP (i.e. _m = n_), 
 customer at the beginning of an iteration. After initializing the basic ant system algorithm, the two steps 
 _construction of vehicle routes_ and _trail update_, are repeated for a given number of iterations.
 
-To find the best configuration for the ACS parameters, we've used iRace, a R library described in the following paper:
-https://cran.r-project.org/web/packages/irace/vignettes/irace-package.pdf. The best configuration obtained with iRace
-is:
+To find the best configuration for the ACS parameters, we've used iRace. The scenario used for iRace to find
+the best configuration can be found here: https://github.com/afurculita/VehicleRoutingProblem/tree/master/tuning/acs.
+The best configuration obtained with iRace is:
 
-| alpha | beta |  rho | omega |   q0  |
-| ----- | ---- | ---- | ----- | ----- |
-| 4     | 6.38 | 0.96 | 0.58  | 0.59  |
+| alpha | beta |  rho | omega |   q0  | iterations |
+| ----- | ---- | ---- | ----- | ----- | ---------- |
+| 1.95   | 4.76 | 0.66 | 0.85  | 0.48  |     20    | 
+
+## Results
+
+| Instance | Dimension | ACS before optim. | ACS after optim. | Tabu before optim. | Tabu after optim. | Optimal value | 
+| ----- | ---- | ---- | ----- | ----- | ---------- | ----------- |
+| A-n32-k5 | 32      | 984.44       | 863.15                 | 903.7                    | 822.86             | 784        |
+| A-n60-k9 | 60      | 1737.50      | 1629.55                | 1464.09                  | 1460.51           | 1408 |
+| A-n80-k10| 80      | 2137.22      | 2043.01                | 1845.08                  | 1833.87            | 1764 |
+| B-n78-k10| 78     | 1503.56      | 1479.05                | 1421.76                  | 1421.52             | 1266 |
+| P-n101-k4| 101    | 917.17      | 883.51                 | 771.68                   | 757.24             | 681 |
+| Golden_20| 421    | 2305.47      | 2282.83                | 2503.03                   | 2502.39            | 1820.09 |
+
+## Conclusions
+
+ 1. ACS and Tabu Search are good options for solving VRP
+ 2. ACS depends a lot on how are its parameters defined
+ 3. There is no guarantee to obtain optimal solutions; it depends on a probabilistic factor
+ 4. Tabu Search is much better than ACS for solving VRP

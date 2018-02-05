@@ -1,2 +1,2 @@
-alpha beta rho  omega q0
-1.0   1.0  0.95 0.1   0.9
+alpha beta rho  omega q0 iterations
+1.0   1.0  0.95 0.1   0.9 5
