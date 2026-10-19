@@ -9,14 +9,24 @@ package ro.uaic.info.acs;
  * @param omega        local pheromone update rate applied to every traversed arc, in [0, 1]
  * @param q0           probability of choosing the greedy (exploitation) step, in [0, 1]
  * @param iterations   number of colony iterations (>= 1)
- * @param numberOfAnts ants per iteration; {@code 0} means "one ant per customer"
- * @param localSearch  whether each ant's routes are improved with 2-opt before the pheromone update
+ * @param numberOfAnts ants per iteration (Dorigo &amp; Gambardella use 10); {@code 0} means "one ant per customer"
+ * @param localSearch  how each ant's routes are improved before the pheromone update
  */
 public record AcsParameters(double alpha, double beta, double rho, double omega, double q0, int iterations, int numberOfAnts,
-                            boolean localSearch) {
+                            LocalSearchMode localSearch) {
 
-    /** Dorigo &amp; Gambardella's classic ACS settings with a 20-iteration budget. */
-    public static final AcsParameters DEFAULT = new AcsParameters(1.0, 2.0, 0.1, 0.1, 0.9, 20, 0, true);
+    /** Local search applied to every ant's solution. */
+    public enum LocalSearchMode {
+        /** No local search: the raw constructed routes. */
+        NONE,
+        /** Intra-route 2-opt only (cheap). */
+        TWO_OPT,
+        /** Full descent over relocate, Or-opt, swap, 2-opt and cross-exchange (strong, slower). */
+        FULL
+    }
+
+    /** Dorigo &amp; Gambardella's classic ACS settings: 10 ants, a 100-iteration budget and full local search. */
+    public static final AcsParameters DEFAULT = new AcsParameters(1.0, 2.0, 0.1, 0.1, 0.9, 100, 10, LocalSearchMode.FULL);
 
     public AcsParameters {
         requireRange("alpha", alpha, 0.0, Double.POSITIVE_INFINITY);
@@ -32,6 +42,13 @@ public record AcsParameters(double alpha, double beta, double rho, double omega,
         if (numberOfAnts < 0) {
             throw new IllegalArgumentException("numberOfAnts must be >= 0, got " + numberOfAnts);
         }
+        if (localSearch == null) {
+            throw new IllegalArgumentException("localSearch must not be null");
+        }
+    }
+
+    public AcsParameters withIterations(int newIterations) {
+        return new AcsParameters(alpha, beta, rho, omega, q0, newIterations, numberOfAnts, localSearch);
     }
 
     private static void requireRange(String name, double value, double min, double max) {

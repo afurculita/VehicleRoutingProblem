@@ -29,6 +29,7 @@ class GreedySolverTest {
         // Solution.of already validates feasibility; check the reported cost is consistent.
         assertEquals(Solution.cost(instance, solution.getRoutes()), solution.getCost(), 1e-9);
         assertEquals(8, solution.getNumberOfRoutes());
+        assertEquals(497.0, solution.getCost(), 1e-9);
     }
 
     @Test

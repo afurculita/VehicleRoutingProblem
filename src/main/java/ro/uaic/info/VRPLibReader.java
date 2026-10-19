@@ -47,7 +47,7 @@ import java.util.Map;
  * <p>The TSPLIB specification defines EUC_2D distances as the Euclidean distance rounded to the
  * nearest integer, and the best-known values of the A, B, P, M and X instance sets use that
  * convention. The Golden and Li instances, on the other hand, are evaluated with real-valued
- * distances. Rounding is therefore configurable: see {@link #read(Path, boolean)}.
+ * distances. {@link DistanceMode#AUTO} picks the convention from the dialect of the file.
  */
 public final class VRPLibReader {
 
@@ -56,45 +56,51 @@ public final class VRPLibReader {
     private static final String DEPOT_SECTION = "DEPOT_SECTION";
     private static final String EOF = "EOF";
 
+    /** How Euclidean distances are evaluated. */
+    public enum DistanceMode {
+        /** Rounded to the nearest integer for the standard dialect (A, B, P, M, X), real-valued for Golden / Li. */
+        AUTO,
+        /** Real-valued distances. */
+        EXACT,
+        /** Rounded to the nearest integer, as TSPLIB prescribes for {@code EUC_2D}. */
+        ROUNDED
+    }
+
     private VRPLibReader() {
     }
 
-    /** Reads an instance using real-valued (non-rounded) Euclidean distances. */
+    /** Reads an instance with {@link DistanceMode#AUTO}. */
     public static VrpInstance read(Path file) throws IOException {
-        return read(file, false);
+        return read(file, DistanceMode.AUTO);
     }
 
-    /**
-     * @param file           the {@code .vrp} file
-     * @param roundDistances if {@code true}, round each distance to the nearest integer as TSPLIB prescribes
-     */
-    public static VrpInstance read(Path file, boolean roundDistances) throws IOException {
+    public static VrpInstance read(Path file, DistanceMode mode) throws IOException {
         try (BufferedReader reader = Files.newBufferedReader(file, StandardCharsets.UTF_8)) {
-            return read(reader, roundDistances);
+            return read(reader, mode);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Cannot parse " + file + ": " + e.getMessage(), e);
         }
     }
 
     /** Parses an instance from its textual content. */
-    public static VrpInstance parse(String content, boolean roundDistances) {
+    public static VrpInstance parse(String content, DistanceMode mode) {
         try {
-            return read(new StringReader(content), roundDistances);
+            return read(new StringReader(content), mode);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    public static VrpInstance read(Reader source, boolean roundDistances) throws IOException {
+    public static VrpInstance read(Reader source, DistanceMode mode) throws IOException {
         BufferedReader reader = source instanceof BufferedReader b ? b : new BufferedReader(source);
-        Parser parser = new Parser(reader, roundDistances);
+        Parser parser = new Parser(reader, mode);
         return parser.parse();
     }
 
     /** Stateful single-pass parser. */
     private static final class Parser {
         private final BufferedReader reader;
-        private final boolean roundDistances;
+        private final DistanceMode mode;
 
         private String name = "";
         private int dimension = -1;
@@ -111,9 +117,9 @@ public final class VRPLibReader {
         private double[] depotCoordinates;
         private String pushedBack;
 
-        Parser(BufferedReader reader, boolean roundDistances) {
+        Parser(BufferedReader reader, DistanceMode mode) {
             this.reader = reader;
-            this.roundDistances = roundDistances;
+            this.mode = mode;
         }
 
         VrpInstance parse() throws IOException {
@@ -354,7 +360,12 @@ public final class VRPLibReader {
                 throw new IllegalArgumentException(DEMAND_SECTION + " lists " + demand.size()
                         + " rows but " + NODE_COORD_SECTION + " lists " + coordinates.size());
             }
-            return new VrpInstance(name, capacity, demands, euclideanDistances(points, roundDistances), maxRouteLength);
+            boolean round = switch (mode) {
+                case EXACT -> false;
+                case ROUNDED -> true;
+                case AUTO -> depotCoordinates == null; // standard dialect: TSPLIB convention
+            };
+            return new VrpInstance(name, capacity, demands, euclideanDistances(points, round), maxRouteLength);
         }
     }
 

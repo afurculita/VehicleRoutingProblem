@@ -5,6 +5,7 @@ import ro.uaic.info.Solution;
 import ro.uaic.info.TestInstances;
 import ro.uaic.info.VrpInstance;
 import ro.uaic.info.greedy.GreedySolver;
+import ro.uaic.info.local.CandidateLists;
 
 import java.util.List;
 import java.util.Random;
@@ -68,5 +69,16 @@ class TabuSearchSolverTest {
         VrpInstance instance = TestInstances.tiny();
         assertThrows(IllegalArgumentException.class, () -> new TabuSearchSolver(instance, -1, 10, new Random()));
         assertThrows(IllegalArgumentException.class, () -> new TabuSearchSolver(instance, 5, 0, new Random()));
+        assertThrows(IllegalArgumentException.class,
+                () -> new TabuSearchSolver(instance, 5, 10, -0.5, new Random(), new CandidateLists(instance, 0)));
+    }
+
+    @Test
+    void granularNeighbourhoodAndFrequencyPenaltyStillImproveTheGreedySolution() {
+        VrpInstance instance = TestInstances.pn16k8();
+        Solution greedy = new GreedySolver(instance).solve();
+        Solution result = new TabuSearchSolver(instance, 5, 500, 0.2, new Random(1), new CandidateLists(instance, 5))
+                .solveFrom(greedy);
+        assertTrue(result.getCost() < greedy.getCost());
     }
 }

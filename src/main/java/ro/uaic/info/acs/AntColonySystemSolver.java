@@ -4,6 +4,9 @@ import ro.uaic.info.Solution;
 import ro.uaic.info.Solver;
 import ro.uaic.info.VrpInstance;
 import ro.uaic.info.greedy.GreedySolver;
+import ro.uaic.info.local.CandidateLists;
+import ro.uaic.info.local.LocalSearch;
+import ro.uaic.info.local.RouteState;
 import ro.uaic.info.local.TwoOpt;
 
 import java.util.ArrayList;
@@ -14,11 +17,13 @@ import java.util.Random;
  * Ant Colony System (Dorigo &amp; Gambardella, 1997) adapted to the CVRP.
  *
  * <p>Each ant builds a complete solution by travelling from the depot and repeatedly choosing the
- * next customer among the unserved ones that still fit in the vehicle. When nothing fits the ant
- * returns to the depot and starts a new route. The choice follows the pseudo-random proportional
- * rule: with probability {@code q0} the ant greedily takes the arc maximising
- * τ<sup>α</sup>·η<sup>β</sup> (η = 1/d), otherwise it draws the next customer with probability
- * proportional to that product.
+ * next customer among the unserved ones that still fit in the vehicle (capacity and, if declared,
+ * maximum route length). When nothing fits the ant returns to the depot and starts a new route. The
+ * choice follows the pseudo-random proportional rule: with probability {@code q0} the ant greedily
+ * takes the arc maximising τ<sup>α</sup>·η<sup>β</sup> (η = 1/d), otherwise it draws the next
+ * customer with probability proportional to that product. As usual in ACS, the choice is first
+ * restricted to the ant's {@link CandidateLists candidate list}; all feasible customers are
+ * considered only when no candidate is feasible.
  *
  * <p>Pheromones are initialised to τ<sub>0</sub> = 1 / (n · C<sub>nn</sub>), where C<sub>nn</sub> is
  * the cost of the nearest-neighbour ({@link GreedySolver}) solution. Every arc an ant traverses is
@@ -26,11 +31,14 @@ import java.util.Random;
  * attractive to the following ants and so diversifies the search. After each iteration the global
  * update τ ← (1 − ρ)·τ + ρ / L<sub>best</sub> is applied to the arcs of the best-so-far solution.
  *
- * <p>As recommended by Dorigo &amp; Gambardella, each ant's routes are optionally improved with a
- * 2-opt local search ({@link TwoOpt}) before they compete for the global update.
+ * <p>As recommended by Dorigo &amp; Gambardella, each ant's routes are improved by a local search
+ * before they compete for the global update: either 2-opt only or the full
+ * {@link LocalSearch} descent (see {@link AcsParameters.LocalSearchMode}).
  *
- * <p>To mimic "one ant at each customer", ant {@code k} is forced to visit customer
- * {@code 1 + (k mod numberOfCustomers)} first. Runs are reproducible for a given {@link Random} seed.
+ * <p>Ant {@code k} is forced to visit customer {@code 1 + (k mod numberOfCustomers)} first, so with
+ * one ant per customer every customer starts a tour ("one ant at each vertex"); with the default of
+ * 10 ants the starting customers rotate across iterations. Runs are reproducible for a given
+ * {@link Random} seed.
  */
 public final class AntColonySystemSolver implements Solver {
 
@@ -40,6 +48,8 @@ public final class AntColonySystemSolver implements Solver {
     private final VrpInstance instance;
     private final AcsParameters params;
     private final Random random;
+    private final CandidateLists candidates;
+    private final LocalSearch localSearch;
 
     private final int n;
     private final int numberOfAnts;
@@ -49,9 +59,15 @@ public final class AntColonySystemSolver implements Solver {
     private final double tau0;
 
     public AntColonySystemSolver(VrpInstance instance, AcsParameters params, Random random) {
+        this(instance, params, random, new CandidateLists(instance, 0));
+    }
+
+    public AntColonySystemSolver(VrpInstance instance, AcsParameters params, Random random, CandidateLists candidates) {
         this.instance = instance;
         this.params = params;
         this.random = random;
+        this.candidates = candidates;
+        this.localSearch = params.localSearch() == AcsParameters.LocalSearchMode.FULL ? new LocalSearch(instance, candidates) : null;
         this.n = instance.getDimension();
         this.numberOfAnts = params.numberOfAnts() == 0 ? instance.getNumberOfCustomers() : params.numberOfAnts();
 
@@ -86,11 +102,9 @@ public final class AntColonySystemSolver implements Solver {
 
         for (int it = 0; it < params.iterations(); it++) {
             for (int k = 0; k < numberOfAnts; k++) {
-                int firstCustomer = 1 + k % instance.getNumberOfCustomers();
+                int firstCustomer = 1 + (it * numberOfAnts + k) % instance.getNumberOfCustomers();
                 List<List<Integer>> routes = constructSolution(firstCustomer);
-                if (params.localSearch()) {
-                    TwoOpt.improveAll(instance, routes);
-                }
+                routes = improve(routes);
                 double cost = Solution.cost(instance, routes);
                 if (cost < bestCost - Solution.EPSILON) {
                     bestCost = cost;
@@ -102,6 +116,21 @@ public final class AntColonySystemSolver implements Solver {
         return Solution.of(instance, bestRoutes);
     }
 
+    private List<List<Integer>> improve(List<List<Integer>> routes) {
+        return switch (params.localSearch()) {
+            case NONE -> routes;
+            case TWO_OPT -> {
+                TwoOpt.improveAll(instance, routes);
+                yield routes;
+            }
+            case FULL -> {
+                RouteState state = new RouteState(instance, routes);
+                localSearch.descend(state);
+                yield state.toCustomerRoutes();
+            }
+        };
+    }
+
     /** One ant's walk: a complete feasible set of routes, starting with {@code firstCustomer}. */
     private List<List<Integer>> constructSolution(int firstCustomer) {
         boolean[] served = new boolean[n];
@@ -110,8 +139,9 @@ public final class AntColonySystemSolver implements Solver {
         List<Integer> route = new ArrayList<>();
         int current = VrpInstance.DEPOT;
         int load = 0;
+        double length = 0.0;
 
-        int[] candidates = new int[n];
+        int[] feasible = new int[n];
         double[] weights = new double[n];
 
         while (remaining > 0) {
@@ -119,11 +149,9 @@ public final class AntColonySystemSolver implements Solver {
             if (current == VrpInstance.DEPOT && route.isEmpty() && !served[firstCustomer]) {
                 next = firstCustomer;
             } else {
-                int count = 0;
-                for (int c = 1; c < n; c++) {
-                    if (!served[c] && load + instance.getDemand(c) <= instance.getCapacity()) {
-                        candidates[count++] = c;
-                    }
+                int count = collectCandidates(current, served, load, length, candidates.of(current), feasible);
+                if (count == 0 && !candidates.isComplete()) {
+                    count = collectAll(current, served, load, length, feasible);
                 }
                 if (count == 0) {
                     // Vehicle is full: close the route at the depot and start a new one.
@@ -132,14 +160,16 @@ public final class AntColonySystemSolver implements Solver {
                     route = new ArrayList<>();
                     current = VrpInstance.DEPOT;
                     load = 0;
+                    length = 0.0;
                     continue;
                 }
-                next = chooseNext(current, candidates, count, weights);
+                next = chooseNext(current, feasible, count, weights);
             }
             localUpdate(current, next);
             route.add(next);
             served[next] = true;
             load += instance.getDemand(next);
+            length += instance.getDistance(current, next);
             remaining--;
             current = next;
         }
@@ -148,13 +178,38 @@ public final class AntColonySystemSolver implements Solver {
         return routes;
     }
 
+    private boolean feasible(int current, int c, boolean[] served, int load, double length) {
+        return !served[c] && c != VrpInstance.DEPOT && instance.fits(load, c)
+                && length + instance.getDistance(current, c) + instance.getDistance(c, VrpInstance.DEPOT) <= instance.getMaxRouteLength();
+    }
+
+    private int collectCandidates(int current, boolean[] served, int load, double length, int[] from, int[] out) {
+        int count = 0;
+        for (int c : from) {
+            if (feasible(current, c, served, load, length)) {
+                out[count++] = c;
+            }
+        }
+        return count;
+    }
+
+    private int collectAll(int current, boolean[] served, int load, double length, int[] out) {
+        int count = 0;
+        for (int c = 1; c < n; c++) {
+            if (feasible(current, c, served, load, length)) {
+                out[count++] = c;
+            }
+        }
+        return count;
+    }
+
     /** Pseudo-random proportional rule. */
-    private int chooseNext(int current, int[] candidates, int count, double[] weights) {
+    private int chooseNext(int current, int[] feasible, int count, double[] weights) {
         double total = 0.0;
-        int argmax = candidates[0];
+        int argmax = feasible[0];
         double max = -1.0;
         for (int k = 0; k < count; k++) {
-            int c = candidates[k];
+            int c = feasible[k];
             double w = attractiveness(current, c);
             weights[k] = w;
             total += w;
@@ -171,10 +226,10 @@ public final class AntColonySystemSolver implements Solver {
         for (int k = 0; k < count; k++) {
             acc += weights[k];
             if (r < acc) {
-                return candidates[k];
+                return feasible[k];
             }
         }
-        return candidates[count - 1]; // rounding guard
+        return feasible[count - 1]; // rounding guard
     }
 
     private double attractiveness(int i, int j) {

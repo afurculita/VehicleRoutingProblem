@@ -3,9 +3,13 @@ package ro.uaic.info;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
+import ro.uaic.info.VRPLibReader.DistanceMode;
 import ro.uaic.info.acs.AcsParameters;
+import ro.uaic.info.acs.AcsParameters.LocalSearchMode;
 import ro.uaic.info.acs.AntColonySystemSolver;
+import ro.uaic.info.greedy.ClarkeWrightSolver;
 import ro.uaic.info.greedy.GreedySolver;
+import ro.uaic.info.local.CandidateLists;
 import ro.uaic.info.tabu.TabuSearchSolver;
 
 import java.io.IOException;
@@ -19,8 +23,9 @@ import java.util.Random;
  * Command line entry point.
  *
  * <pre>
- * java -jar target/vrp-2.0.0.jar -alg tabu -i datasets/small/A-n32-k5.vrp --tabu 5 --iterations 10000 --seed 1
- * java -jar target/vrp-2.0.0.jar -alg acs  -i datasets/small/A-n32-k5.vrp --beta 2 --rho 0.1 --omega 0.1 --q0 0.9 --iterations 100
+ * java -jar target/vrp-2.0.0.jar -alg tabu -i datasets/small/A-n32-k5.vrp --seed 1
+ * java -jar target/vrp-2.0.0.jar -alg acs  -i datasets/small/A-n32-k5.vrp --seed 1 --iterations 50
+ * java -jar target/vrp-2.0.0.jar -alg hybrid -i datasets/big/X-n101-k25.vrp --seed 1
  * </pre>
  *
  * Prints the routes followed by a {@code Best Value: <cost>} line (consumed by the irace scripts).
@@ -30,17 +35,36 @@ public final class VRPRunner {
     static final int DEFAULT_TABU_ITERATIONS = 10_000;
     static final int DEFAULT_ACS_ITERATIONS = 100;
 
+    /** Algorithms selectable with {@code -alg}. */
+    public enum Algorithm {
+        /** Nearest-neighbour construction. */
+        GREEDY,
+        /** Clarke &amp; Wright savings construction. */
+        SAVINGS,
+        /** Tabu search started from the savings solution. */
+        TABU,
+        /** Ant colony system. */
+        ACS,
+        /** Ant colony system followed by a tabu search from its best solution. */
+        HYBRID
+    }
+
+    /** Initial solution of the tabu search. */
+    public enum Init {
+        GREEDY, SAVINGS
+    }
+
     @Parameter(names = {"--algorithm", "-alg"}, required = true,
-            description = "Algorithm to run: greedy, tabu or acs")
-    String algorithm;
+            description = "Algorithm to run: greedy, savings, tabu, acs or hybrid (acs then tabu)")
+    Algorithm algorithm;
 
     @Parameter(names = {"--instance", "-i"}, required = true,
             description = "Path to a TSPLIB/CVRPLIB .vrp instance")
     String instance;
 
-    @Parameter(names = "--round-distances",
-            description = "Round Euclidean distances to the nearest integer (TSPLIB EUC_2D convention)")
-    boolean roundDistances = false;
+    @Parameter(names = "--distances",
+            description = "Distance evaluation: auto (rounded for A/B/P/M/X, exact for Golden/Li), exact or rounded")
+    DistanceMode distances = DistanceMode.AUTO;
 
     @Parameter(names = "--seed",
             description = "Random seed; a random one is drawn and printed when omitted")
@@ -48,12 +72,20 @@ public final class VRPRunner {
 
     @Parameter(names = "--iterations",
             description = "ACS: number of colony iterations (default 100). "
-                    + "Tabu: iterations without improvement before stopping (default 10000)")
+                    + "Tabu and hybrid: iterations without improvement before stopping (default 10000)")
     Integer iterations;
+
+    @Parameter(names = "--granularity",
+            description = "Size of the candidate lists restricting the neighbourhood (0 = complete neighbourhood)")
+    int granularity = 30;
 
     // Tabu Search
     @Parameter(names = "--tabu", description = "Tabu: base tabu tenure in iterations; short tenures (5-10) work best")
     int tabuHorizon = 5;
+    @Parameter(names = "--penalty", description = "Tabu: frequency penalty factor of the long-term memory (0 = off)")
+    double penalty = 0.1;
+    @Parameter(names = "--init", description = "Tabu: initial solution, greedy or savings")
+    Init init = Init.SAVINGS;
 
     // Ant Colony System
     @Parameter(names = "--alpha", description = "ACS: pheromone exponent")
@@ -67,9 +99,11 @@ public final class VRPRunner {
     @Parameter(names = "--q0", description = "ACS: exploitation probability, in [0, 1]")
     double q0 = 0.9;
     @Parameter(names = "--ants", description = "ACS: ants per iteration (0 = one per customer)")
-    int ants = 0;
-    @Parameter(names = "--local-search", arity = 1, description = "ACS: improve each ant's routes with 2-opt (true/false)")
-    boolean localSearch = true;
+    int ants = 10;
+    @Parameter(names = "--local-search", description = "ACS: local search applied to each ant: none, two_opt or full")
+    LocalSearchMode localSearch = LocalSearchMode.FULL;
+    @Parameter(names = "--acs-iterations", description = "Hybrid: colony iterations of the ACS phase")
+    int acsIterations = DEFAULT_ACS_ITERATIONS;
 
     @Parameter(names = {"--help", "-h"}, help = true, description = "Show this help")
     boolean help;
@@ -121,17 +155,14 @@ public final class VRPRunner {
 
     /** Loads the instance, builds the solver and runs it, reporting progress on {@code out}. */
     Solution execute(PrintStream out) throws IOException {
-        VrpInstance problem = VRPLibReader.read(Path.of(instance), roundDistances);
+        VrpInstance problem = VRPLibReader.read(Path.of(instance), distances);
         long effectiveSeed = seed != null ? seed : new Random().nextLong();
         Solver solver = createSolver(problem, new Random(effectiveSeed));
 
         out.println("Instance: " + problem.getName() + " (" + problem.getNumberOfCustomers() + " customers, capacity "
-                + problem.getCapacity() + ", at least " + problem.getMinimumNumberOfVehicles() + " vehicles)");
-        if (problem.hasMaxRouteLength()) {
-            out.println("Warning: the instance limits route length to " + problem.getMaxRouteLength()
-                    + ", which the solvers do not enforce");
-        }
-        out.println("Algorithm: " + algorithm.toLowerCase(Locale.ROOT));
+                + problem.getCapacity() + ", at least " + problem.getMinimumNumberOfVehicles() + " vehicles"
+                + (problem.hasMaxRouteLength() ? ", maximum route length " + problem.getMaxRouteLength() : "") + ")");
+        out.println("Algorithm: " + algorithm.name().toLowerCase(Locale.ROOT));
         out.println("Seed: " + effectiveSeed);
 
         long start = System.nanoTime();
@@ -148,13 +179,28 @@ public final class VRPRunner {
     }
 
     Solver createSolver(VrpInstance problem, Random random) {
-        return switch (algorithm.toLowerCase(Locale.ROOT)) {
-            case "greedy" -> new GreedySolver(problem);
-            case "tabu" -> new TabuSearchSolver(problem, tabuHorizon, iterationsOr(DEFAULT_TABU_ITERATIONS), random);
-            case "acs" -> new AntColonySystemSolver(problem,
-                    new AcsParameters(alpha, beta, rho, omega, q0, iterationsOr(DEFAULT_ACS_ITERATIONS), ants, localSearch),
-                    random);
-            default -> throw new IllegalArgumentException("Unknown algorithm '" + algorithm + "', expected greedy, tabu or acs");
+        CandidateLists candidates = new CandidateLists(problem, granularity);
+        return switch (algorithm) {
+            case GREEDY -> new GreedySolver(problem);
+            case SAVINGS -> new ClarkeWrightSolver(problem);
+            case TABU -> () -> tabu(problem, random, candidates).solveFrom(initialSolution(problem));
+            case ACS -> new AntColonySystemSolver(problem, acsParameters(iterationsOr(DEFAULT_ACS_ITERATIONS)), random, candidates);
+            case HYBRID -> () -> {
+                Solution colony = new AntColonySystemSolver(problem, acsParameters(acsIterations), random, candidates).solve();
+                return tabu(problem, random, candidates).solveFrom(colony);
+            };
         };
+    }
+
+    private Solution initialSolution(VrpInstance problem) {
+        return init == Init.GREEDY ? new GreedySolver(problem).solve() : new ClarkeWrightSolver(problem).solve();
+    }
+
+    private TabuSearchSolver tabu(VrpInstance problem, Random random, CandidateLists candidates) {
+        return new TabuSearchSolver(problem, tabuHorizon, iterationsOr(DEFAULT_TABU_ITERATIONS), penalty, random, candidates);
+    }
+
+    private AcsParameters acsParameters(int colonyIterations) {
+        return new AcsParameters(alpha, beta, rho, omega, q0, colonyIterations, ants, localSearch);
     }
 }

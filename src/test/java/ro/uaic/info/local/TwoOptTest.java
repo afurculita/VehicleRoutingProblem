@@ -3,6 +3,7 @@ package ro.uaic.info.local;
 import org.junit.jupiter.api.Test;
 import ro.uaic.info.Solution;
 import ro.uaic.info.VRPLibReader;
+import ro.uaic.info.VRPLibReader.DistanceMode;
 import ro.uaic.info.VrpInstance;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ class TwoOptTest {
             3 1
             4 1
             5 1
-            """, false);
+            """, DistanceMode.EXACT);
 
     @Test
     void uncrossesARoute() {

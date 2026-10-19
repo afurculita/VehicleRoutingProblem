@@ -1,2 +1,2 @@
-tabu    iterations
-5       10000
+tabu    iterations  penalty  granularity
+5       10000       0.1      30

@@ -31,7 +31,37 @@ class VRPRunnerTest {
         assertEquals(0, run.exitCode(), run.err());
         assertTrue(run.out().contains("Instance: P-n16-k8 (15 customers, capacity 35, at least 8 vehicles)"), run.out());
         assertTrue(run.out().contains("Algorithm: greedy"), run.out());
-        assertTrue(run.out().contains("Best Value: 499.4408"), run.out());
+        assertTrue(run.out().contains("Best Value: 497.0000"), run.out()); // rounded distances by default
+    }
+
+    @Test
+    void runsSavings() {
+        Run run = run("-alg", "savings", "-i", INSTANCE);
+        assertEquals(0, run.exitCode(), run.err());
+        assertTrue(run.out().contains("Algorithm: savings"), run.out());
+        assertTrue(run.out().contains("Best Value: "), run.out());
+    }
+
+    @Test
+    void runsHybrid() {
+        Run run = run("-alg", "hybrid", "-i", INSTANCE, "--acs-iterations", "3", "--iterations", "50", "--seed", "4");
+        assertEquals(0, run.exitCode(), run.err());
+        assertTrue(run.out().contains("Algorithm: hybrid"), run.out());
+        assertTrue(run.out().contains("Best Value: "), run.out());
+    }
+
+    @Test
+    void acceptsNeighbourhoodAndInitialSolutionOptions() {
+        Run run = run("-alg", "tabu", "-i", INSTANCE, "--iterations", "50", "--granularity", "0", "--init", "greedy",
+                "--penalty", "0", "--seed", "1");
+        assertEquals(0, run.exitCode(), run.err());
+        assertTrue(run.out().contains("Best Value: "), run.out());
+    }
+
+    @Test
+    void rejectsUnknownEnumValues() {
+        assertEquals(2, run("-alg", "tabu", "-i", INSTANCE, "--init", "random").exitCode());
+        assertEquals(2, run("-alg", "acs", "-i", INSTANCE, "--local-search", "sometimes").exitCode());
     }
 
     @Test
@@ -46,7 +76,7 @@ class VRPRunnerTest {
     @Test
     void runsAcsWithExplicitParameters() {
         Run run = run("-alg", "acs", "-i", INSTANCE, "--iterations", "5", "--ants", "4", "--q0", "0.5",
-                "--local-search", "false", "--seed", "2");
+                "--local-search", "none", "--seed", "2");
         assertEquals(0, run.exitCode(), run.err());
         assertTrue(run.out().contains("Algorithm: acs"), run.out());
         assertTrue(run.out().contains("Best Value: "), run.out());
@@ -54,17 +84,20 @@ class VRPRunnerTest {
 
     @Test
     void acceptsRoundedDistances() {
-        Run run = run("-alg", "greedy", "-i", INSTANCE, "--round-distances");
-        assertEquals(0, run.exitCode(), run.err());
-        // with integer distances the cost is an integer too
-        assertTrue(run.out().matches("(?s).*Best Value: \\d+\\.0000.*"), run.out());
+        Run rounded = run("-alg", "greedy", "-i", INSTANCE, "--distances", "rounded");
+        assertEquals(0, rounded.exitCode(), rounded.err());
+        assertTrue(rounded.out().contains("Best Value: 497.0000"), rounded.out());
+
+        Run exact = run("-alg", "greedy", "-i", INSTANCE, "--distances", "EXACT");
+        assertEquals(0, exact.exitCode(), exact.err());
+        assertTrue(exact.out().contains("Best Value: 499.4408"), exact.out());
     }
 
     @Test
-    void warnsAboutUnenforcedRouteLengthLimit() {
+    void reportsRouteLengthLimit() {
         Run run = run("-alg", "greedy", "-i", Path.of("datasets", "big", "Li_21.vrp").toString());
         assertEquals(0, run.exitCode(), run.err());
-        assertTrue(run.out().contains("Warning: the instance limits route length to 1800.0"), run.out());
+        assertTrue(run.out().contains("maximum route length 1800.0"), run.out());
     }
 
     @Test
@@ -97,10 +130,10 @@ class VRPRunnerTest {
     }
 
     @Test
-    void unknownAlgorithmExitsWithOne() {
+    void unknownAlgorithmExitsWithTwo() {
         Run run = run("-alg", "simulated-annealing", "-i", INSTANCE);
-        assertEquals(1, run.exitCode());
-        assertTrue(run.err().contains("Unknown algorithm"), run.err());
+        assertEquals(2, run.exitCode());
+        assertTrue(run.err().contains("-alg"), run.err());
     }
 
     @Test

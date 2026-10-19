@@ -11,7 +11,8 @@ import java.util.Locale;
  * ends. The cost is the sum, over all routes, of the distances depot → c1 → … → ck → depot.
  *
  * <p>Instances are immutable. {@link #of(VrpInstance, List)} computes the cost and checks
- * feasibility (every customer served exactly once, no route over capacity).
+ * feasibility (every customer served exactly once, no route over capacity or over the maximum
+ * route length when the instance declares one).
  */
 public final class Solution {
 
@@ -83,6 +84,11 @@ public final class Solution {
             if (load > instance.getCapacity()) {
                 throw new IllegalArgumentException("Route " + r + " has load " + load
                         + " which exceeds the capacity " + instance.getCapacity());
+            }
+            double length = routeCost(instance, routes.get(r));
+            if (length > instance.getMaxRouteLength() + EPSILON) {
+                throw new IllegalArgumentException("Route " + r + " has length " + length
+                        + " which exceeds the maximum route length " + instance.getMaxRouteLength());
             }
         }
         for (int c = 1; c < n; c++) {

@@ -26,6 +26,8 @@ jobs:
 
       - name: Smoke-run all algorithms on a small instance
         run: |
-          java -jar target/vrp-*.jar -alg greedy -i datasets/small/P-n16-k8.vrp
-          java -jar target/vrp-*.jar -alg tabu   -i datasets/small/P-n16-k8.vrp --seed 1
-          java -jar target/vrp-*.jar -alg acs    -i datasets/small/P-n16-k8.vrp --seed 1 --iterations 5
+          java -jar target/vrp-*.jar -alg greedy  -i datasets/small/P-n16-k8.vrp
+          java -jar target/vrp-*.jar -alg savings -i datasets/small/P-n16-k8.vrp
+          java -jar target/vrp-*.jar -alg tabu    -i datasets/small/P-n16-k8.vrp --seed 1
+          java -jar target/vrp-*.jar -alg acs     -i datasets/small/P-n16-k8.vrp --seed 1 --iterations 5
+          java -jar target/vrp-*.jar -alg hybrid  -i datasets/big/Golden_1.vrp --seed 1 --acs-iterations 2 --iterations 200

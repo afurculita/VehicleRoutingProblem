@@ -1,6 +1,7 @@
 package ro.uaic.info;
 
 import org.junit.jupiter.api.Test;
+import ro.uaic.info.VRPLibReader.DistanceMode;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -42,8 +43,8 @@ class VRPLibReaderTest {
     void roundsDistancesToNearestIntegerWhenRequested() {
         String text = TestInstances.tinyText().replace("2 0 3", "2 1 1"); // distance to depot becomes sqrt(2)
 
-        VrpInstance exact = VRPLibReader.parse(text, false);
-        VrpInstance rounded = VRPLibReader.parse(text, true);
+        VrpInstance exact = VRPLibReader.parse(text, DistanceMode.EXACT);
+        VrpInstance rounded = VRPLibReader.parse(text, DistanceMode.ROUNDED);
 
         assertEquals(Math.sqrt(2), exact.getDistance(0, 1), 1e-12);
         assertEquals(1.0, rounded.getDistance(0, 1), 1e-12);
@@ -51,7 +52,7 @@ class VRPLibReaderTest {
 
     @Test
     void readsARealCvrplibInstanceFromDisk() throws IOException {
-        VrpInstance instance = VRPLibReader.read(TestInstances.P_N16_K8);
+        VrpInstance instance = VRPLibReader.read(TestInstances.P_N16_K8, DistanceMode.EXACT);
 
         assertEquals("P-n16-k8", instance.getName());
         assertEquals(16, instance.getDimension());
@@ -61,6 +62,40 @@ class VRPLibReaderTest {
         assertEquals(11, instance.getDemand(15));
         // node 1 (30,40) and node 2 (37,52): sqrt(49 + 144)
         assertEquals(Math.sqrt(193), instance.getDistance(0, 1), 1e-12);
+    }
+
+    @Test
+    void autoModeRoundsStandardDialectAndKeepsGoldenExact() throws IOException {
+        VrpInstance standard = VRPLibReader.read(TestInstances.P_N16_K8);
+        assertEquals(14.0, standard.getDistance(0, 1), 1e-12); // sqrt(193) = 13.89 rounded
+
+        VrpInstance golden = VRPLibReader.read(Path.of("datasets", "big", "Golden_20.vrp"));
+        assertEquals(5.7735, golden.getDistance(0, 1), 1e-9);
+
+        VrpInstance goldenRounded = VRPLibReader.read(Path.of("datasets", "big", "Golden_20.vrp"), DistanceMode.ROUNDED);
+        assertEquals(6.0, goldenRounded.getDistance(0, 1), 1e-12);
+    }
+
+    @Test
+    void rejectsCustomerUnreachableWithinRouteLengthLimit() {
+        String text = """
+                DIMENSION: 3
+                CAPACITY: 100
+                DISTANCE: 15
+                EDGE_WEIGHT_TYPE: FUNCTION
+                EDGE_WEIGHT_FORMAT: EUC_2D
+                NODE_COORD_SECTION
+                1 10 0
+                2 0 5
+                DEMAND_SECTION
+                1 1
+                2 1
+                DEPOT_SECTION
+                0 0
+                -1
+                """;
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
+        assertTrue(e.getMessage().contains("maximum route length"), e.getMessage());
     }
 
     @Test
@@ -80,7 +115,7 @@ class VRPLibReaderTest {
                 3 1
                 """;
 
-        VrpInstance instance = VRPLibReader.parse(text, false);
+        VrpInstance instance = VRPLibReader.parse(text, DistanceMode.EXACT);
 
         assertEquals(3, instance.getDimension());
         assertEquals(1.0, instance.getDistance(0, 1), 1e-12);
@@ -91,7 +126,7 @@ class VRPLibReaderTest {
         String text = TestInstances.tinyText()
                 .replace("1 0 0\n2 0 3", "2 0 3\n1 0 0");
 
-        assertEquals(3.0, VRPLibReader.parse(text, false).getDistance(0, 1), 1e-12);
+        assertEquals(3.0, VRPLibReader.parse(text, DistanceMode.EXACT).getDistance(0, 1), 1e-12);
     }
 
     @Test
@@ -121,7 +156,7 @@ class VRPLibReaderTest {
                 EOF
                 """;
 
-        VrpInstance instance = VRPLibReader.parse(text, false);
+        VrpInstance instance = VRPLibReader.parse(text, DistanceMode.EXACT);
 
         assertEquals(4, instance.getDimension());
         assertEquals(0, instance.getDemand(0));
@@ -168,60 +203,60 @@ class VRPLibReaderTest {
                 0 0
                 -1
                 """;
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
         assertTrue(e.getMessage().contains("DIMENSION"), e.getMessage());
     }
 
     @Test
     void rejectsMissingDimension() {
         String text = TestInstances.tinyText().replace("DIMENSION : 5\n", "");
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
         assertTrue(e.getMessage().contains("DIMENSION"), e.getMessage());
     }
 
     @Test
     void rejectsMissingCapacity() {
         String text = TestInstances.tinyText().replace("CAPACITY : 10\n", "");
-        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
     }
 
     @Test
     void rejectsUnsupportedEdgeWeightType() {
         String text = TestInstances.tinyText().replace("EUC_2D", "EXPLICIT");
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
         assertTrue(e.getMessage().contains("EDGE_WEIGHT_TYPE"), e.getMessage());
     }
 
     @Test
     void rejectsDepotThatIsNotTheFirstNode() {
         String text = TestInstances.tinyText().replace(" 1\n -1", " 2\n -1");
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
         assertTrue(e.getMessage().contains("depot"), e.getMessage());
     }
 
     @Test
     void rejectsDemandAboveCapacity() {
         String text = TestInstances.tinyText().replace("5 6", "5 11");
-        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
         assertTrue(e.getMessage().contains("exceeds"), e.getMessage());
     }
 
     @Test
     void rejectsTruncatedSection() {
         String text = TestInstances.tinyText().replace("5 -4 0\n", "");
-        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
     }
 
     @Test
     void rejectsDuplicateNodeRows() {
         String text = TestInstances.tinyText().replace("5 -4 0", "4 -4 0");
-        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
     }
 
     @Test
     void rejectsOutOfRangeNodeIds() {
         String text = TestInstances.tinyText().replace("5 -4 0", "6 -4 0");
-        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, false));
+        assertThrows(IllegalArgumentException.class, () -> VRPLibReader.parse(text, DistanceMode.EXACT));
     }
 
     @Test

@@ -37,7 +37,7 @@ public final class VrpInstance {
     /**
      * @param maxRouteLength maximum length of a single route ({@code DISTANCE} entry of the Golden and
      *                       Li instances), or {@link Double#POSITIVE_INFINITY} when unconstrained.
-     *                       It is informational only: none of the solvers enforces it.
+     *                       Every solver respects it and {@link Solution#of} validates it.
      */
     public VrpInstance(String name, int capacity, int[] demand, double[][] distance, double maxRouteLength) {
         this.name = Objects.requireNonNull(name, "name");
@@ -75,6 +75,10 @@ public final class VrpInstance {
             if (demand[i] > capacity) {
                 throw new IllegalArgumentException("Node " + (i + 1) + " has demand " + demand[i]
                         + " which exceeds the vehicle capacity " + capacity + "; the instance is infeasible");
+            }
+            if (i != DEPOT && 2 * distance[DEPOT][i] > maxRouteLength) {
+                throw new IllegalArgumentException("Node " + (i + 1) + " cannot be served within the maximum route length "
+                        + maxRouteLength + "; the instance is infeasible");
             }
             if (distance[i][i] != 0.0) {
                 throw new IllegalArgumentException("distance(" + i + ", " + i + ") must be 0");
@@ -134,7 +138,7 @@ public final class VrpInstance {
         return deepCopy(distance);
     }
 
-    /** Whether the instance declares a maximum route length (which the solvers do not enforce). */
+    /** Whether the instance declares a maximum route length. */
     public boolean hasMaxRouteLength() {
         return maxRouteLength != Double.POSITIVE_INFINITY;
     }
@@ -147,6 +151,11 @@ public final class VrpInstance {
     /** Total demand of all customers. */
     public int getTotalDemand() {
         return Arrays.stream(demand).sum();
+    }
+
+    /** Whether a vehicle can serve the given customers in one route as far as capacity goes. */
+    public boolean fits(int load, int customer) {
+        return load + demand[customer] <= capacity;
     }
 
     /** A lower bound on the number of vehicles: {@code ceil(totalDemand / capacity)}. */
