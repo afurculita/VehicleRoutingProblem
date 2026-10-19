@@ -287,12 +287,12 @@ instances the ACS ran 20 iterations (`--iterations 20`) and the hybrid's colony 
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
 | A-n32-k5 | 31 | 1145 | 842 | **784 (3.2 s)** | **784 (2.1 s)** | **784 (4.9 s)** | 784 |
 | A-n60-k9 | 59 | 1837 | 1408 | **1354 (9.6 s)** | **1354 (7.1 s)** | **1354 (12.7 s)** | 1354 |
-| A-n80-k10 | 79 | 2348 | 1840 | **1775 (14.0 s)** | 1780 (6.7 s) | pending | 1763 |
-| B-n78-k10 | 77 | pending | pending | pending | pending | pending | 1221 |
-| P-n101-k4 | 100 | pending | pending | pending | pending | pending | 681 |
-| X-n101-k25 | 100 | pending | pending | pending | pending | pending | 27591 |
-| Golden_1 | 240 | pending | pending | pending | pending | pending | 5623.47 |
-| Golden_20 | 420 | pending | pending | pending | pending | pending | 1820.09 |
+| A-n80-k10 | 79 | 2348 | 1840 | 1775 (14.0 s) | 1780 (6.7 s) | **1766 (22.0 s)** | 1763 |
+| B-n78-k10 | 77 | 1758 | 1262 | 1229 (11.6 s) | **1221 (9.4 s)** | 1223 (16.5 s) | 1221 |
+| P-n101-k4 | 100 | 1021 | 746 | **681 (22.7 s)** | 682 (9.1 s) | **681 (29.4 s)** | 681 |
+| X-n101-k25 | 100 | 41944 | 28986 | 27868 (25.2 s) | 27793 (18.3 s) | **27665 (33.3 s)** | 27591 |
+| Golden_1 | 240 | 7667.34 | 6113.89 | 5788.21 (33.1 s) | 5762.72 (59.4 s) | **5760.27 (73.8 s)** | 5623.47 |
+| Golden_20 | 420 | 2234.21 | 1964.38 | 1945.37 (67.7 s) | 1938.38 (35.6 s) | **1935.50 (67.6 s)** | 1820.09 |
 
 Timings in seconds. For comparison, the original implementation reported 822.86 / 1460.51 / 1833.87 /
 1421.52 / 757.24 for the Tabu Search on the five small instances and 863.15 / 1629.55 / 2043.01 /
