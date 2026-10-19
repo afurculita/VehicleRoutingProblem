@@ -26,3 +26,8 @@ target/*
 results
 tuning/tuning-arena/*
 !.gitkeep
+# IDE / build
+*.iml
+.idea/
+.vscode/
+target/

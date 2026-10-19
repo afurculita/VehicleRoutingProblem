@@ -12,7 +12,7 @@
 
 EXE='/usr/bin/java'
 
-FIXED_PARAMS=" -jar ../../target/vrp-1.0.0.jar -alg acs "
+FIXED_PARAMS=" -jar ../../target/vrp-2.0.0.jar -alg acs "
 
 CONFIG_ID="$1"
 INSTANCE_ID="$2"
@@ -35,7 +35,7 @@ if [ ! -x "${EXE}" ]; then
     error "${EXE}: not found or not executable (pwd: $(pwd))"
 fi
 
-$EXE $FIXED_PARAMS -i $INSTANCE $CONFIG_PARAMS 1> $STDOUT 2> $STDERR
+$EXE $FIXED_PARAMS -i $INSTANCE --seed $SEED $CONFIG_PARAMS 1> $STDOUT 2> $STDERR
 
 if [ ! -s "${STDOUT}" ]; then
     error "${STDOUT}: No such file or directory"

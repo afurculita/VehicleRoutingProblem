@@ -1,3 +1,5 @@
 # name		    switch		        type	values
-tabu           "--tabu "            i  	    (5, 10)
-iterations     "--iterations "      i       (1, 20)
+tabu           "--tabu "            i  	    (1, 15)
+iterations     "--iterations "      i       (500, 20000)
+penalty        "--penalty "         r       (0.0, 1.0)
+granularity    "--granularity "     i       (10, 60)
