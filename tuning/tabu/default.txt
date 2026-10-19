@@ -1,2 +1,2 @@
 tabu    iterations
-10      5
+5       10000
